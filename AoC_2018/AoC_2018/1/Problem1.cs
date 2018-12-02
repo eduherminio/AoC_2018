@@ -1,16 +1,15 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.Text;
+using System.IO;
 using FileParser;
 
 namespace AoC_2018._1
 {
     class Problem1
     {
-        const string _fileName = "1\\1_1.in";
+        private readonly string _fileName = Path.Combine("1", "1.in");
 
-        internal void Solve()
+        internal void Solve_1()
         {
             ICollection<long> frequencyChanges = ParseInput(_fileName);
 
@@ -21,8 +20,32 @@ namespace AoC_2018._1
                 result += freq;
             }
 
-            Console.WriteLine(result);
-            Console.ReadKey();
+            Console.WriteLine($"Day 1, part 1: {result}");
+        }
+
+        internal void Solve_2()
+        {
+            ICollection<long> frequencyChanges = ParseInput(_fileName);
+            HashSet<long> uniqueFrequencies = new HashSet<long>() { 0 };
+
+            long result = 0;
+            bool exit = false;
+
+            while (!exit)
+            {
+                foreach (long freq in frequencyChanges)
+                {
+                    result += freq;
+
+                    if (uniqueFrequencies.Contains(result))
+                    {
+                        Console.WriteLine($"Day 1, part 2: {result}");
+                        exit = true;
+                        break;
+                    }
+                    uniqueFrequencies.Add(result);
+                }
+            }
         }
 
         internal ICollection<long> ParseInput(string inputFile)

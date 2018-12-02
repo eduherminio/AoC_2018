@@ -7,9 +7,12 @@ namespace AoC_2018
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
             Problem1 problem1 = new Problem1();
-            problem1.Solve();
+
+            problem1.Solve_1();
+            problem1.Solve_2();
+
+            Console.ReadKey();
         }
     }
 }
