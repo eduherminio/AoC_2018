@@ -37,6 +37,87 @@ namespace AoC_2018._2
             Console.WriteLine($"Day 2, part 1: {checkSum}");
         }
 
+        internal void Solve_2()
+        {
+            List<string> ids = ParseInput(_fileName).ToList(); ;
+
+            Tuple<string, string> correctBoxes = ExtractCorrectBoxes(ids);
+
+            string commonChars = ExtractCommonChars(correctBoxes);
+
+            Console.WriteLine($"Day 2, part 2: {commonChars}");
+        }
+
+        internal Tuple<string, string> ExtractCorrectBoxes(List<string> ids)
+        {
+            ids.Sort();
+
+            Tuple<string, string> correctBoxes = Tuple.Create(default(string), default(string));
+
+            for (int idIndex = 1; idIndex < ids.Count; ++idIndex)
+            {
+                string currentId = ids[idIndex];
+                string previousId = ids[idIndex - 1];
+
+                if (currentId.Count() != previousId.Count())
+                {
+                    continue;
+                }
+
+                bool alreadyACoindidence = false;
+
+                for (int charIndex = 0; charIndex < currentId.Count(); ++charIndex)
+                {
+                    if (currentId[charIndex] != previousId[charIndex])
+                    {
+                        if (alreadyACoindidence == true)
+                        {
+                            alreadyACoindidence = false;
+                            break;
+                        }
+                        else
+                        {
+                            alreadyACoindidence = true;
+                        }
+                    }
+                }
+
+                if (alreadyACoindidence == true)
+                {
+                    correctBoxes = Tuple.Create(currentId, previousId);
+
+                    if (correctBoxes.Item1 == default(string) || correctBoxes.Item2 == default(string))
+                    {
+                        throw new Exception("Exception in ExtractCorrectBoxes method");
+                    }
+
+                    break;
+                }
+            }
+
+            return correctBoxes;
+        }
+
+        internal string ExtractCommonChars(Tuple<string, string> tuple)
+        {
+            string commonString = default(string);
+
+            for (int charIndex = 0; charIndex < tuple.Item1.Count(); ++charIndex)
+            {
+                if (tuple.Item1[charIndex] == tuple.Item2[charIndex])
+                {
+                    commonString += tuple.Item1[charIndex];
+                }
+            }
+
+            if (commonString.Count() + 1 != tuple.Item1.Count() || commonString.Count() + 1 != tuple.Item2.Count() || commonString == default(string))
+            {
+                throw new Exception("Exception in ExtractCommonChars method");
+            }
+
+            return commonString;
+        }
+
         internal ICollection<string> ParseInput(string inputFile)
         {
             ICollection<string> result = new List<string>();

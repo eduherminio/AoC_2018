@@ -26,7 +26,7 @@ namespace AoC_2018
             Problem2 problem = new Problem2();
 
             problem.Solve_1();
-            //problem.Solve_2();
+            problem.Solve_2();
         }
     }
 }
