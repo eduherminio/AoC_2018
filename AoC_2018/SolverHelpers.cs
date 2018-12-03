@@ -12,22 +12,20 @@ namespace AoC_2018
         {
             IProblem problem = new TProblem();
 
-            problem.Solve_1();
-            problem.Solve_2();
+            SolveIProblem(problem);
         }
 
         internal static void SolveAllProblems()
         {
-            foreach (Type problem in LoadAllProblems())
+            foreach (Type problemType in LoadAllProblems())
             {
-                if (Activator.CreateInstance(problem) is IProblem problemToSolve)
+                if (Activator.CreateInstance(problemType) is IProblem problem)
                 {
-                    problemToSolve.Solve_1();
-                    problemToSolve.Solve_2();
+                    SolveIProblem(problem);
                 }
                 else
                 {
-                    throw new Exception($"'{problem} is IProblem' cast has failed unexpectedly");
+                    throw new Exception($"'{problemType} is IProblem' cast has failed unexpectedly");
                 }
             }
         }
@@ -36,6 +34,12 @@ namespace AoC_2018
         {
             return Assembly.GetAssembly(typeof(IProblem)).GetTypes()
                 .Where(type => typeof(IProblem).IsAssignableFrom(type) && !type.IsInterface);
+        }
+
+        private static void SolveIProblem(IProblem problem)
+        {
+            problem.Solve_1();
+            problem.Solve_2();
         }
     }
 }
