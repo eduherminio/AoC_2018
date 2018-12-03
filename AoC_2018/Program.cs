@@ -1,5 +1,4 @@
-﻿using AoC_2018.Solutions;
-using System;
+﻿using System;
 
 namespace AoC_2018
 {
@@ -7,19 +6,9 @@ namespace AoC_2018
     {
         static void Main(string[] args)
         {
-            Solve<Problem1>();
-            Solve<Problem2>();
+            SolverHelpers.SolveAllProblems();
 
             Console.ReadKey();
-        }
-
-        private static void Solve<TProblem>()
-            where TProblem : IProblem, new()
-        {
-            IProblem problem = new TProblem();
-
-            problem.Solve_1();
-            problem.Solve_2();
         }
     }
 }
