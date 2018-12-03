@@ -4,15 +4,15 @@ using System.IO;
 using System.Linq;
 using FileParser;
 
-namespace AoC_2018._2
+namespace AoC_2018.Solutions
 {
-    class Problem2
+    class Problem2 : IProblem
     {
-        private readonly string _fileName = Path.Combine("2", "2.in");
+        public string FilePath => Path.Combine("Inputs", "2.in");
 
-        internal void Solve_1()
+        public void Solve_1()
         {
-            ICollection<string> ids = ParseInput(_fileName);
+            ICollection<string> ids = ParseInput(FilePath);
 
             long checkSum;
             int stringsWithTwoRepeatedLetters = 0, stringsWithThreeRepeatedLetters = 0;
@@ -37,18 +37,18 @@ namespace AoC_2018._2
             Console.WriteLine($"Day 2, part 1: {checkSum}");
         }
 
-        internal void Solve_2()
+        public void Solve_2()
         {
-            List<string> ids = ParseInput(_fileName).ToList(); ;
+            List<string> ids = ParseInput(FilePath).ToList(); ;
 
             Tuple<string, string> correctBoxes = ExtractCorrectBoxes(ids);
 
             string commonChars = ExtractCommonChars(correctBoxes);
 
-            Console.WriteLine($"Day 2, part 2: {commonChars}");
+            Console.WriteLine($"Day 2, part 2: {commonChars}\n");
         }
 
-        internal Tuple<string, string> ExtractCorrectBoxes(List<string> ids)
+        private Tuple<string, string> ExtractCorrectBoxes(List<string> ids)
         {
             ids.Sort();
 
@@ -98,7 +98,7 @@ namespace AoC_2018._2
             return correctBoxes;
         }
 
-        internal string ExtractCommonChars(Tuple<string, string> tuple)
+        private string ExtractCommonChars(Tuple<string, string> tuple)
         {
             string commonString = default(string);
 
@@ -118,7 +118,7 @@ namespace AoC_2018._2
             return commonString;
         }
 
-        internal ICollection<string> ParseInput(string inputFile)
+        private ICollection<string> ParseInput(string inputFile)
         {
             ICollection<string> result = new List<string>();
 

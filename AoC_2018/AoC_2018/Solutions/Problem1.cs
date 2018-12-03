@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using FileParser;
 
-namespace AoC_2018._1
+namespace AoC_2018.Solutions
 {
-    class Problem1
+    class Problem1 : IProblem
     {
-        private readonly string _fileName = Path.Combine("1", "1.in");
+        public string FilePath => Path.Combine("Inputs", "1.in");
 
-        internal void Solve_1()
+        public void Solve_1()
         {
-            ICollection<long> frequencyChanges = ParseInput(_fileName);
+            ICollection<long> frequencyChanges = ParseInput(FilePath);
 
             long result = 0;
 
@@ -23,9 +23,9 @@ namespace AoC_2018._1
             Console.WriteLine($"Day 1, part 1: {result}");
         }
 
-        internal void Solve_2()
+        public void Solve_2()
         {
-            ICollection<long> frequencyChanges = ParseInput(_fileName);
+            ICollection<long> frequencyChanges = ParseInput(FilePath);
             HashSet<long> uniqueFrequencies = new HashSet<long>() { 0 };
 
             long result = 0;
@@ -39,7 +39,7 @@ namespace AoC_2018._1
 
                     if (uniqueFrequencies.Contains(result))
                     {
-                        Console.WriteLine($"Day 1, part 2: {result}");
+                        Console.WriteLine($"Day 1, part 2: {result}\n");
                         exit = true;
                         break;
                     }
@@ -48,7 +48,7 @@ namespace AoC_2018._1
             }
         }
 
-        internal ICollection<long> ParseInput(string inputFile)
+        private ICollection<long> ParseInput(string inputFile)
         {
             ICollection<long> result = new List<long>();
 
