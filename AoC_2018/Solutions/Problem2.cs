@@ -12,7 +12,7 @@ namespace AoC_2018.Solutions
 
         public void Solve_1()
         {
-            ICollection<string> ids = ParseInput(FilePath);
+            IEnumerable<string> ids = ParseInput(FilePath);
 
             long checkSum;
             int stringsWithTwoRepeatedLetters = 0, stringsWithThreeRepeatedLetters = 0;
@@ -118,10 +118,8 @@ namespace AoC_2018.Solutions
             return commonString;
         }
 
-        private ICollection<string> ParseInput(string inputFile)
+        private IEnumerable<string> ParseInput(string inputFile)
         {
-            ICollection<string> result = new List<string>();
-
             IParsedFile parsedFile = new ParsedFile(inputFile);
 
             while (!parsedFile.Empty)
@@ -129,11 +127,9 @@ namespace AoC_2018.Solutions
                 IParsedLine parsedLine = parsedFile.NextLine();
                 while (!parsedLine.Empty)
                 {
-                    result.Add(parsedLine.NextElement<string>());
+                    yield return parsedLine.NextElement<string>();
                 }
             }
-
-            return result;
         }
     }
 }
