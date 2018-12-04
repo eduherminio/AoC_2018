@@ -56,7 +56,7 @@ namespace AoC_2018.Solutions
 
         class Rectangle
         {
-            long Id { get; set; }
+            public int Id { get; set; }
             public HashSet<Point> PointSet { get; set; } = new HashSet<Point>();
 
             public Rectangle(int x, int y, int x0, int y0)
@@ -93,7 +93,6 @@ namespace AoC_2018.Solutions
                         repeatedPoints.Add(point);
                     }
                 }
-
             }
 
             Console.WriteLine($"Day 2, part 1: {repeatedPoints.Count}");
@@ -101,7 +100,38 @@ namespace AoC_2018.Solutions
 
         public void Solve_2()
         {
-            throw new NotImplementedException();
+            List<Rectangle> rectangles = ParseInput(FilePath).ToList();
+
+            HashSet<Point> evaluatedPoints = new HashSet<Point>();
+            HashSet<Point> repeatedPoints = new HashSet<Point>();
+            foreach (Rectangle rectangle in rectangles)
+            {
+                foreach (Point point in rectangle.PointSet)
+                {
+                    if (!evaluatedPoints.Add(point))
+                    {
+                        repeatedPoints.Add(point);
+                    }
+                }
+            }
+
+            foreach (Rectangle rectangle in rectangles)
+            {
+                bool isIntact = true;
+                foreach (Point point in rectangle.PointSet)
+                {
+                    if (repeatedPoints.TryGetValue(point, out Point _))
+                    {
+                        isIntact = false;
+                        break;
+                    }
+                }
+
+                if (isIntact)
+                {
+                    Console.WriteLine($"Day 2, part 2: {rectangle.Id}");
+                }
+            }
         }
 
         private IEnumerable<Rectangle> ParseInput(string inputFile)
@@ -113,11 +143,13 @@ namespace AoC_2018.Solutions
             while (!parsedFile.Empty)
             {
                 IParsedLine parsedLine = parsedFile.NextLine();
-                string id = parsedLine.NextElement<string>();
-                if (!id.StartsWith("#"))
+                string idString = parsedLine.NextElement<string>();
+                if (!idString.StartsWith("#"))
                 {
-                    throw new Exception($"{id} is not #n");
+                    throw new Exception($"{idString} is not #n");
                 }
+
+                int.TryParse(idString.Trim('#'), out int id);
 
                 string at = parsedLine.NextElement<string>();
                 if (at != "@")
@@ -139,7 +171,7 @@ namespace AoC_2018.Solutions
                 int.TryParse(xy.Substring(0, xy.IndexOf('x')), out int x);
                 int.TryParse(xy.Substring(xy.IndexOf('x') + 1), out int y);
 
-                rectangles.Add(new Rectangle(x: x, y: y, x0: x0, y0: y0));
+                rectangles.Add(new Rectangle(x: x, y: y, x0: x0, y0: y0) { Id = id });
             }
             return rectangles;
         }
