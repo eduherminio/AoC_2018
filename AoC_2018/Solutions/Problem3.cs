@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace AoC_2018.Solutions
 {
@@ -85,19 +84,7 @@ namespace AoC_2018.Solutions
         {
             List<Rectangle> rectangles = ParseInput().ToList();
 
-            HashSet<Point> evaluatedPoints = new HashSet<Point>();
-            HashSet<Point> repeatedPoints = new HashSet<Point>();
-
-            foreach (Rectangle rectangle in rectangles)
-            {
-                foreach (Point point in rectangle.PointSet)
-                {
-                    if (!evaluatedPoints.Add(point))
-                    {
-                        repeatedPoints.Add(point);
-                    }
-                }
-            }
+            HashSet<Point> repeatedPoints = ExtractRepeatedPoints(rectangles);
 
             Console.WriteLine($"Day 3, part 1: {repeatedPoints.Count}");
         }
@@ -106,8 +93,24 @@ namespace AoC_2018.Solutions
         {
             List<Rectangle> rectangles = ParseInput().ToList();
 
+            HashSet<Point> repeatedPoints = ExtractRepeatedPoints(rectangles);
+
+            Rectangle nonOverlappedRectangle_1 = ExtractNonOverlappedRectangle_IterativeImplementation(rectangles, repeatedPoints);
+            Rectangle nonOverlappedRectangle_2 = ExtractNonOverlappedRectangle_LinqImplementation(rectangles, repeatedPoints);
+
+            if (nonOverlappedRectangle_1.Id != nonOverlappedRectangle_2.Id)
+            {
+                throw new Exception("At least one of ExtractNonOverlappedRectangle implementations is wrong");
+            }
+
+            Console.WriteLine($"Day 3, part 2: {nonOverlappedRectangle_1.Id}");
+        }
+
+        private HashSet<Point> ExtractRepeatedPoints(List<Rectangle> rectangles)
+        {
             HashSet<Point> evaluatedPoints = new HashSet<Point>();
             HashSet<Point> repeatedPoints = new HashSet<Point>();
+
             foreach (Rectangle rectangle in rectangles)
             {
                 foreach (Point point in rectangle.PointSet)
@@ -119,12 +122,25 @@ namespace AoC_2018.Solutions
                 }
             }
 
+            return repeatedPoints;
+        }
+
+        /// <summary>
+        /// Faster
+        /// </summary>
+        /// <param name="rectangles"></param>
+        /// <param name="repeatedPoints"></param>
+        /// <returns></returns>
+        private Rectangle ExtractNonOverlappedRectangle_IterativeImplementation(List<Rectangle> rectangles, HashSet<Point> repeatedPoints)
+        {
+            List<Rectangle> nonOverlappedRectangles = new List<Rectangle>();
+
             foreach (Rectangle rectangle in rectangles)
             {
                 bool isIntact = true;
                 foreach (Point point in rectangle.PointSet)
                 {
-                    if (repeatedPoints.TryGetValue(point, out Point _))
+                    if (repeatedPoints.Contains(point))
                     {
                         isIntact = false;
                         break;
@@ -133,9 +149,28 @@ namespace AoC_2018.Solutions
 
                 if (isIntact)
                 {
-                    Console.WriteLine($"Day 3, part 2: {rectangle.Id}");
+                    nonOverlappedRectangles.Add(rectangle);
                 }
             }
+
+            if (nonOverlappedRectangles.Count != 1)
+            {
+                throw new Exception("Error in ExtractNonOverlappedRectangle method");
+            }
+
+            return nonOverlappedRectangles.First();
+        }
+
+        /// <summary>
+        /// Smarter
+        /// </summary>
+        /// <param name="rectangles"></param>
+        /// <param name="repeatedPoints"></param>
+        /// <returns></returns>
+        private Rectangle ExtractNonOverlappedRectangle_LinqImplementation(List<Rectangle> rectangles, HashSet<Point> repeatedPoints)
+        {
+            return rectangles.Single(rectangle =>
+                 !repeatedPoints.Any(repeatedPoint => rectangle.PointSet.Contains(repeatedPoint)));
         }
 
         private IEnumerable<Rectangle> ParseInput()
