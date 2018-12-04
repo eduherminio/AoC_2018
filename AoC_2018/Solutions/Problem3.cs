@@ -209,7 +209,7 @@ namespace AoC_2018.Solutions
                     .Split('x');
                 if (xy.Length != 2)
                 {
-                    throw new Exception($"Length of {x0y0} isn't 2");
+                    throw new Exception($"Length of {xy} isn't 2");
                 }
                 int.TryParse(xy.First(), out int x);
                 int.TryParse(xy.Last(), out int y);
