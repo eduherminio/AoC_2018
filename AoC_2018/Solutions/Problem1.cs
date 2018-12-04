@@ -11,7 +11,7 @@ namespace AoC_2018.Solutions
 
         public void Solve_1()
         {
-            IEnumerable<long> frequencyChanges = ParseInput(FilePath);
+            IEnumerable<long> frequencyChanges = ParseInput();
 
             long result = 0;
 
@@ -25,7 +25,7 @@ namespace AoC_2018.Solutions
 
         public void Solve_2()
         {
-            IEnumerable<long> frequencyChanges = ParseInput(FilePath);
+            IEnumerable<long> frequencyChanges = ParseInput();
             HashSet<long> uniqueFrequencies = new HashSet<long>() { 0 };
 
             long result = 0;
@@ -48,9 +48,9 @@ namespace AoC_2018.Solutions
             }
         }
 
-        private IEnumerable<long> ParseInput(string inputFile)
+        private IEnumerable<long> ParseInput()
         {
-            IParsedFile parsedFile = new ParsedFile(inputFile);
+            IParsedFile parsedFile = new ParsedFile(FilePath);
 
             while (!parsedFile.Empty)
             {

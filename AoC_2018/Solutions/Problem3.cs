@@ -9,6 +9,10 @@ namespace AoC_2018.Solutions
 {
     class Problem3 : IProblem
     {
+        /// <summary>
+        /// Equals method and equality operators overriden
+        /// https://docs.microsoft.com/en-us/visualstudio/code-quality/ca1815-override-equals-and-operator-equals-on-value-types?view=vs-2017
+        /// </summary>
         class Point : IEquatable<Point>
         {
             int X { get; set; }
@@ -79,7 +83,7 @@ namespace AoC_2018.Solutions
 
         public void Solve_1()
         {
-            List<Rectangle> rectangles = ParseInput(FilePath).ToList();
+            List<Rectangle> rectangles = ParseInput().ToList();
 
             HashSet<Point> evaluatedPoints = new HashSet<Point>();
             HashSet<Point> repeatedPoints = new HashSet<Point>();
@@ -95,12 +99,12 @@ namespace AoC_2018.Solutions
                 }
             }
 
-            Console.WriteLine($"Day 2, part 1: {repeatedPoints.Count}");
+            Console.WriteLine($"Day 3, part 1: {repeatedPoints.Count}");
         }
 
         public void Solve_2()
         {
-            List<Rectangle> rectangles = ParseInput(FilePath).ToList();
+            List<Rectangle> rectangles = ParseInput().ToList();
 
             HashSet<Point> evaluatedPoints = new HashSet<Point>();
             HashSet<Point> repeatedPoints = new HashSet<Point>();
@@ -129,16 +133,16 @@ namespace AoC_2018.Solutions
 
                 if (isIntact)
                 {
-                    Console.WriteLine($"Day 2, part 2: {rectangle.Id}");
+                    Console.WriteLine($"Day 3, part 2: {rectangle.Id}");
                 }
             }
         }
 
-        private IEnumerable<Rectangle> ParseInput(string inputFile)
+        private IEnumerable<Rectangle> ParseInput()
         {
             ICollection<Rectangle> rectangles = new List<Rectangle>();
 
-            IParsedFile parsedFile = new ParsedFile(inputFile);
+            IParsedFile parsedFile = new ParsedFile(FilePath);
 
             while (!parsedFile.Empty)
             {

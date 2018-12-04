@@ -12,7 +12,7 @@ namespace AoC_2018.Solutions
 
         public void Solve_1()
         {
-            IEnumerable<string> ids = ParseInput(FilePath);
+            IEnumerable<string> ids = ParseInput();
 
             long checkSum;
             int stringsWithTwoRepeatedLetters = 0, stringsWithThreeRepeatedLetters = 0;
@@ -39,7 +39,7 @@ namespace AoC_2018.Solutions
 
         public void Solve_2()
         {
-            List<string> ids = ParseInput(FilePath).ToList(); ;
+            List<string> ids = ParseInput().ToList(); ;
 
             Tuple<string, string> correctBoxes = ExtractCorrectBoxes(ids);
 
@@ -118,9 +118,9 @@ namespace AoC_2018.Solutions
             return commonString;
         }
 
-        private IEnumerable<string> ParseInput(string inputFile)
+        private IEnumerable<string> ParseInput()
         {
-            IParsedFile parsedFile = new ParsedFile(inputFile);
+            IParsedFile parsedFile = new ParsedFile(FilePath);
 
             while (!parsedFile.Empty)
             {
