@@ -182,33 +182,42 @@ namespace AoC_2018.Solutions
             while (!parsedFile.Empty)
             {
                 IParsedLine parsedLine = parsedFile.NextLine();
+
                 string idString = parsedLine.NextElement<string>();
                 if (!idString.StartsWith("#"))
                 {
                     throw new Exception($"{idString} is not #n");
                 }
-
                 int.TryParse(idString.Trim('#'), out int id);
 
-                string at = parsedLine.NextElement<string>();
-                if (at != "@")
+                if (parsedLine.NextElement<string>() != "@")
                 {
-                    throw new Exception($"{at} is not @");
+                    throw new Exception($"Exception parsing @");
                 }
 
-                string x0y0 = parsedLine.NextElement<string>();
-                int.TryParse(x0y0.Substring(0, x0y0.IndexOf(',')), out int x0);
-                int.TryParse(x0y0.Substring(x0y0.IndexOf(',') + 1).Trim(':'), out int y0);
+                string[] x0y0 = parsedLine.NextElement<string>()
+                    .Trim(':')
+                    .Split(',');
+                if (x0y0.Length != 2)
+                {
+                    throw new Exception($"Length of {x0y0} isn't 2");
+                }
+                int.TryParse(x0y0.First(), out int x0);
+                int.TryParse(x0y0.Last(), out int y0);
 
-                string xy = parsedLine.NextElement<string>();
+                string[] xy = parsedLine.NextElement<string>()
+                    .Split('x');
+                if (xy.Length != 2)
+                {
+                    throw new Exception($"Length of {x0y0} isn't 2");
+                }
+                int.TryParse(xy.First(), out int x);
+                int.TryParse(xy.Last(), out int y);
 
                 if (!parsedLine.Empty)
                 {
                     throw new Exception($"Error parsing line, missing at least {parsedLine.PeekNextElement<string>()}");
                 }
-
-                int.TryParse(xy.Substring(0, xy.IndexOf('x')), out int x);
-                int.TryParse(xy.Substring(xy.IndexOf('x') + 1), out int y);
 
                 rectangles.Add(new Rectangle(x: x, y: y, x0: x0, y0: y0) { Id = id });
             }
