@@ -174,9 +174,29 @@ namespace AoC_2018.Solutions
 
             Dictionary<int, RelevantInfo> guardIdRelevantInfoDictionary = ExtractRelevantInfo(orderedEvents);
 
-            int guardId = default(int);
+            ICollection<RelevantInfo> relevantInfo = guardIdRelevantInfoDictionary.Values;
 
-            Console.WriteLine($"Day 4, part 2: {guardId}");
+            var resultTuple = ExtractMostFrequentlyAsleepMinuteByAGuardAndAssociatedGuardId(relevantInfo);
+            int mostFrequentlyAsleepMinuteByAGuard = resultTuple.Item1;
+            int guardId = resultTuple.Item2;
+
+            Console.WriteLine($"Day 4, part 2: {mostFrequentlyAsleepMinuteByAGuard * guardId}\n");
+        }
+
+        private Tuple<int, int> ExtractMostFrequentlyAsleepMinuteByAGuardAndAssociatedGuardId(ICollection<RelevantInfo> relevantInfo)
+        {
+            Dictionary<int, Tuple<int, int>> guardId_minute_timesAsleepInThatMinute = new Dictionary<int, Tuple<int, int>>();
+            foreach (RelevantInfo info in relevantInfo)
+            {
+                var orderedMinuteTimesDictionary = info.MinuteTimesAsleepDictionary.OrderByDescending(pair => pair.Value);
+
+                guardId_minute_timesAsleepInThatMinute.Add(info.GuardId, Tuple.Create(orderedMinuteTimesDictionary.First().Key, orderedMinuteTimesDictionary.First().Value));
+            }
+
+            var orderedDictionary = guardId_minute_timesAsleepInThatMinute.OrderByDescending(pair => pair.Value.Item2);
+
+            return Tuple.Create(orderedDictionary.First().Value.Item1, orderedDictionary.First().Key);
+
         }
 
         private ICollection<Event> ParseInput()

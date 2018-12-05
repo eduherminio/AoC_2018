@@ -103,7 +103,7 @@ namespace AoC_2018.Solutions
                 throw new Exception("At least one of ExtractNonOverlappedRectangle implementations is wrong");
             }
 
-            Console.WriteLine($"Day 3, part 2: {nonOverlappedRectangle_1.Id}");
+            Console.WriteLine($"Day 3, part 2: {nonOverlappedRectangle_1.Id}\n");
         }
 
         private HashSet<Point> ExtractRepeatedPoints(List<Rectangle> rectangles)
