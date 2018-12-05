@@ -48,6 +48,20 @@ namespace AoC_2018.Solutions
             Console.WriteLine($"Day 2, part 2: {commonChars}\n");
         }
 
+        private IEnumerable<string> ParseInput()
+        {
+            IParsedFile parsedFile = new ParsedFile(FilePath);
+
+            while (!parsedFile.Empty)
+            {
+                IParsedLine parsedLine = parsedFile.NextLine();
+                while (!parsedLine.Empty)
+                {
+                    yield return parsedLine.NextElement<string>();
+                }
+            }
+        }
+
         private Tuple<string, string> ExtractCorrectBoxes(List<string> ids)
         {
             ids.Sort();
@@ -116,20 +130,6 @@ namespace AoC_2018.Solutions
             }
 
             return commonString;
-        }
-
-        private IEnumerable<string> ParseInput()
-        {
-            IParsedFile parsedFile = new ParsedFile(FilePath);
-
-            while (!parsedFile.Empty)
-            {
-                IParsedLine parsedLine = parsedFile.NextLine();
-                while (!parsedLine.Empty)
-                {
-                    yield return parsedLine.NextElement<string>();
-                }
-            }
         }
     }
 }
