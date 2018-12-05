@@ -53,9 +53,9 @@ namespace AoC_2018.Solutions
             Dictionary<int, RelevantInfo> guardIdRelevantInfoDictionary = ExtractRelevantInfo(orderedEvents);
             ICollection<RelevantInfo> relevantInfo = guardIdRelevantInfoDictionary.Values;
 
-            var chosenRelevantInfo = relevantInfo.OrderByDescending(info => info.SecondsAsleep).First();
-            int sleepyGuardId = chosenRelevantInfo.GuardId;
-            int mostAsleepMinut = ExtractMostAsleepMinute(chosenRelevantInfo);
+            var relevantInfoFromGuardWithMoreAsleepTime = relevantInfo.OrderByDescending(info => info.SecondsAsleep).First();
+            int sleepyGuardId = relevantInfoFromGuardWithMoreAsleepTime.GuardId;
+            int mostAsleepMinut = ExtractMostAsleepMinute(relevantInfoFromGuardWithMoreAsleepTime);
 
             long result = sleepyGuardId * mostAsleepMinut;
 
@@ -84,9 +84,7 @@ namespace AoC_2018.Solutions
         {
             Dictionary<int, RelevantInfo> guardIdRelevantInfoDictionary = new Dictionary<int, RelevantInfo>();
 
-            var groupedList = orderedEvents.GroupBy(e => e.GuardId);
-
-            foreach (var grouping in groupedList)
+            foreach (var grouping in orderedEvents.GroupBy(e => e.GuardId))
             {
                 for (int eventIndex = 0; eventIndex < grouping.Count(); ++eventIndex)
                 {
@@ -99,11 +97,7 @@ namespace AoC_2018.Solutions
                             if (previousEvent.EventType == EventType.FallsAsleep)
                             {
                                 TimeSpan asleepTime = (evnt.DateTime - previousEvent.DateTime);
-                                List<int> minutesAsleep = new List<int>();
-                                for (int min = previousEvent.DateTime.Minute; min < evnt.DateTime.Minute; ++min)
-                                {
-                                    minutesAsleep.Add(min);
-                                }
+                                List<int> minutesAsleep = Enumerable.Range(previousEvent.DateTime.Minute, (int)asleepTime.TotalMinutes).ToList();
 
                                 if (guardIdRelevantInfoDictionary.Keys.Contains(grouping.Key))
                                 {
@@ -116,7 +110,7 @@ namespace AoC_2018.Solutions
                                         }
                                         else
                                         {
-                                            guardIdRelevantInfoDictionary[grouping.Key].MinuteTimesAsleepDictionary.Add(min, 1);
+                                            guardIdRelevantInfoDictionary[grouping.Key].MinuteTimesAsleepDictionary.Add(min, value: 1);
                                         }
                                     });
                                 }
@@ -130,7 +124,7 @@ namespace AoC_2018.Solutions
                                     });
 
                                     minutesAsleep.ForEach(min =>
-                                        guardIdRelevantInfoDictionary[grouping.Key].MinuteTimesAsleepDictionary.TryAdd(min, 1));
+                                        guardIdRelevantInfoDictionary[grouping.Key].MinuteTimesAsleepDictionary.TryAdd(min, value: 1));
                                 }
                                 break;
                             }
@@ -144,9 +138,9 @@ namespace AoC_2018.Solutions
 
         private void ExtractGuardId(ref ICollection<Event> orderedEvents, int eventIndex)
         {
-            for (int backwardsIndex = 1; backwardsIndex <= eventIndex; ++backwardsIndex)
+            for (int backwardsEventIndex = 1; backwardsEventIndex <= eventIndex; ++backwardsEventIndex)
             {
-                Event previousEvent = orderedEvents.ElementAt(eventIndex - backwardsIndex);
+                Event previousEvent = orderedEvents.ElementAt(eventIndex - backwardsEventIndex);
                 if (previousEvent.EventType == EventType.BeginsShift)
                 {
                     orderedEvents.ElementAt(eventIndex).GuardId = previousEvent.GuardId;
