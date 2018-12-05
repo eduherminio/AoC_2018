@@ -31,9 +31,7 @@ namespace AoC_2018.Solutions
             }
         }
 
-        public string FilePath => Path.Combine("Inputs", "4.in");
-
-        private class RelevantInfo
+        class RelevantInfo
         {
             public int GuardId { get; set; }
 
@@ -41,6 +39,8 @@ namespace AoC_2018.Solutions
 
             public Dictionary<int, int> MinuteTimesAsleepDictionary { get; set; }
         }
+
+        public string FilePath => Path.Combine("Inputs", "4.in");
 
         public void Solve_1()
         {
@@ -51,11 +51,11 @@ namespace AoC_2018.Solutions
             FillMissingGuardIds(ref orderedEvents);
 
             Dictionary<int, RelevantInfo> guardIdRelevantInfoDictionary = ExtractRelevantInfo(orderedEvents);
+            ICollection<RelevantInfo> relevantInfo = guardIdRelevantInfoDictionary.Values;
 
-            var relevantGrouping = guardIdRelevantInfoDictionary.OrderByDescending(pair => pair.Value.SecondsAsleep).First();
-
-            int sleepyGuardId = relevantGrouping.Key;
-            int mostAsleepMinut = ExtractMostAsleepMinute(relevantGrouping.Value);
+            var chosenRelevantInfo = relevantInfo.OrderByDescending(info => info.SecondsAsleep).First();
+            int sleepyGuardId = chosenRelevantInfo.GuardId;
+            int mostAsleepMinut = ExtractMostAsleepMinute(chosenRelevantInfo);
 
             long result = sleepyGuardId * mostAsleepMinut;
 
@@ -117,7 +117,6 @@ namespace AoC_2018.Solutions
                                         else
                                         {
                                             guardIdRelevantInfoDictionary[grouping.Key].MinuteTimesAsleepDictionary.Add(min, 1);
-
                                         }
                                     });
                                 }
@@ -133,9 +132,8 @@ namespace AoC_2018.Solutions
                                     minutesAsleep.ForEach(min =>
                                         guardIdRelevantInfoDictionary[grouping.Key].MinuteTimesAsleepDictionary.TryAdd(min, 1));
                                 }
+                                break;
                             }
-
-                            break;
                         }
                     }
                 }
@@ -169,23 +167,24 @@ namespace AoC_2018.Solutions
             List<Event> parsedEvents = ParseInput().ToList();
 
             ICollection<Event> orderedEvents = parsedEvents.OrderBy(e => e.DateTime).ToList();
-
             FillMissingGuardIds(ref orderedEvents);
 
             Dictionary<int, RelevantInfo> guardIdRelevantInfoDictionary = ExtractRelevantInfo(orderedEvents);
-
             ICollection<RelevantInfo> relevantInfo = guardIdRelevantInfoDictionary.Values;
 
             var resultTuple = ExtractMostFrequentlyAsleepMinuteByAGuardAndAssociatedGuardId(relevantInfo);
             int mostFrequentlyAsleepMinuteByAGuard = resultTuple.Item1;
             int guardId = resultTuple.Item2;
 
-            Console.WriteLine($"Day 4, part 2: {mostFrequentlyAsleepMinuteByAGuard * guardId}\n");
+            long result = mostFrequentlyAsleepMinuteByAGuard * guardId;
+
+            Console.WriteLine($"Day 4, part 2: {result}\n");
         }
 
         private Tuple<int, int> ExtractMostFrequentlyAsleepMinuteByAGuardAndAssociatedGuardId(ICollection<RelevantInfo> relevantInfo)
         {
             Dictionary<int, Tuple<int, int>> guardId_minute_timesAsleepInThatMinute = new Dictionary<int, Tuple<int, int>>();
+
             foreach (RelevantInfo info in relevantInfo)
             {
                 var orderedMinuteTimesDictionary = info.MinuteTimesAsleepDictionary.OrderByDescending(pair => pair.Value);
@@ -269,6 +268,5 @@ namespace AoC_2018.Solutions
             DateTime.TryParse(dateTimeString, out DateTime dateTime);
             return dateTime;
         }
-
     }
 }
