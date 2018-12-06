@@ -6,7 +6,7 @@ namespace AoC_2018
     {
         static void Main(string[] args)
         {
-            SolverHelpers.SolveAllProblems();
+            ProblemSolver.SolveAllProblems();
 
             Console.ReadKey();
         }

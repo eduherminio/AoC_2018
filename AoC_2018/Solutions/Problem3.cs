@@ -17,7 +17,7 @@ namespace AoC_2018.Solutions
 
             HashSet<Point> repeatedPoints = ExtractRepeatedPoints(rectangles);
 
-            Console.WriteLine($"Day 3, part 1: {repeatedPoints.Count}");
+            Console.Write($"Day 3, part 1: {repeatedPoints.Count}");
         }
 
         public void Solve_2()
@@ -34,7 +34,7 @@ namespace AoC_2018.Solutions
                 throw new Exception("At least one of ExtractNonOverlappedRectangle implementations is wrong");
             }
 
-            Console.WriteLine($"Day 3, part 2: {nonOverlappedRectangle_1.Id}\n");
+            Console.Write($"Day 3, part 2: {nonOverlappedRectangle_1.Id}");
         }
 
         private IEnumerable<Rectangle> ParseInput()

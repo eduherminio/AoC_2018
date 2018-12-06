@@ -27,7 +27,7 @@ namespace AoC_2018.Solutions
 
             long result = sleepyGuardId * mostAsleepMinut;
 
-            Console.WriteLine($"Day 4, part 1: {result}");
+            Console.Write($"Day 4, part 1: {result}");
         }
 
         public void Solve_2()
@@ -46,7 +46,7 @@ namespace AoC_2018.Solutions
 
             long result = mostFrequentlyAsleepMinuteByAGuard * guardId;
 
-            Console.WriteLine($"Day 4, part 2: {result}\n");
+            Console.Write($"Day 4, part 2: {result}");
         }
 
         private ICollection<Event> ParseInput()

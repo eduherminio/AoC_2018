@@ -34,7 +34,7 @@ namespace AoC_2018.Solutions
 
             checkSum = stringsWithTwoRepeatedLetters * stringsWithThreeRepeatedLetters;
 
-            Console.WriteLine($"Day 2, part 1: {checkSum}");
+            Console.Write($"Day 2, part 1: {checkSum}");
         }
 
         public void Solve_2()
@@ -45,7 +45,7 @@ namespace AoC_2018.Solutions
 
             string commonChars = ExtractCommonChars(correctBoxes);
 
-            Console.WriteLine($"Day 2, part 2: {commonChars}\n");
+            Console.Write($"Day 2, part 2: {commonChars}");
         }
 
         private IEnumerable<string> ParseInput()

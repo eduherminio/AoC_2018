@@ -23,7 +23,7 @@ namespace AoC_2018.Solutions
 
             ValidateResult(allPoints, pointsAndItsSurroundingArea);
 
-            Console.WriteLine($"Day 6, part 1: {result}");
+            Console.Write($"Day 6, part 1: {result}");
         }
 
         public void Solve_2()
@@ -35,7 +35,7 @@ namespace AoC_2018.Solutions
 
             HashSet<Point> desiredRegion = ExtractDesiredRegion(candidateLocations, allPoints).ToHashSet();
 
-            Console.WriteLine($"Day 6, part 2: {desiredRegion.Count}");
+            Console.Write($"Day 6, part 2: {desiredRegion.Count}");
         }
 
         public IEnumerable<Point> ParseInput()

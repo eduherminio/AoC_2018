@@ -20,7 +20,7 @@ namespace AoC_2018.Solutions
                 result += freq;
             }
 
-            Console.WriteLine($"Day 1, part 1: {result}");
+            Console.Write($"Day 1, part 1: {result}");
         }
 
         public void Solve_2()
@@ -39,7 +39,7 @@ namespace AoC_2018.Solutions
 
                     if (uniqueFrequencies.Contains(result))
                     {
-                        Console.WriteLine($"Day 1, part 2: {result}\n");
+                        Console.Write($"Day 1, part 2: {result}");
                         exit = true;
                         break;
                     }

@@ -20,7 +20,7 @@ namespace AoC_2018.Solutions
                 throw new Exception("Something's wrong inplemented");
             }
 
-            Console.WriteLine($"Day 5, part 1: {result.Length}");
+            Console.Write($"Day 5, part 1: {result.Length}");
         }
 
         public void Solve_2()
@@ -36,7 +36,7 @@ namespace AoC_2018.Solutions
                 throw new Exception("Something's wrong inplemented");
             }
 
-            Console.WriteLine($"Day 5, part 2: {resultLength}");
+            Console.Write($"Day 5, part 2: {resultLength}");
         }
 
         private string ParseInput()
