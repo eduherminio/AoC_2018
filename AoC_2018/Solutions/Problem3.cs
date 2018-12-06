@@ -1,4 +1,5 @@
-﻿using FileParser;
+﻿using AoC_2018.Model;
+using FileParser;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -152,55 +153,6 @@ namespace AoC_2018.Solutions
         {
             return rectangles.Single(rectangle =>
                  !repeatedPoints.Any(repeatedPoint => rectangle.PointSet.Contains(repeatedPoint)));
-        }
-
-        /// <summary>
-        /// Equals method and equality operators overriden
-        /// https://docs.microsoft.com/en-us/visualstudio/code-quality/ca1815-override-equals-and-operator-equals-on-value-types?view=vs-2017
-        /// </summary>
-        private class Point : IEquatable<Point>
-        {
-            int X { get; set; }
-
-            int Y { get; set; }
-
-            public Point(int x, int y)
-            {
-                X = x;
-                Y = y;
-            }
-
-            public override int GetHashCode()
-            {
-                return X ^ Y;
-            }
-
-            public override bool Equals(object obj)
-            {
-                if (!(obj is Point))
-                    return false;
-
-                return Equals((Point)obj);
-            }
-
-            public bool Equals(Point other)
-            {
-                if (X != other.X)
-                    return false;
-
-                return Y == other.Y;
-            }
-
-            public static bool operator ==(Point point1, Point point2)
-            {
-                return point1.Equals(point2);
-            }
-
-            public static bool operator !=(Point point1, Point point2)
-            {
-                return !point1.Equals(point2);
-            }
-
         }
 
         private class Rectangle
