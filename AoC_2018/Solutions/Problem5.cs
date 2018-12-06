@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Text;
+using System.Linq;
 
 namespace AoC_2018.Solutions
 {
@@ -26,7 +25,18 @@ namespace AoC_2018.Solutions
 
         public void Solve_2()
         {
-            throw new NotImplementedException();
+            string input = ParseInput();
+
+            string unfinishedResult = CannotBelieveIveImplementedThisReact(input);
+
+            int resultLength = ReactRemovingProblematicUnit(unfinishedResult);
+
+            if (resultLength >= unfinishedResult.Length)
+            {
+                throw new Exception("Something's wrong inplemented");
+            }
+
+            Console.WriteLine($"Day 5, part 2: {resultLength}");
         }
 
         private string ParseInput()
@@ -35,6 +45,11 @@ namespace AoC_2018.Solutions
             {
                 return reader.ReadToEnd();
             }
+        }
+
+        private bool IsReactionCondition(char a, char b)
+        {
+            return a != b && char.ToUpperInvariant(a) == char.ToUpperInvariant(b);
         }
 
         private string CannotBelieveIveImplementedThisReact(string polymer)
@@ -56,7 +71,7 @@ namespace AoC_2018.Solutions
         {
             for (int index = 1; index < polymer.Length; ++index)
             {
-                if (IsReactionCondition(polymer[index -1], polymer[index]))
+                if (IsReactionCondition(polymer[index - 1], polymer[index]))
                 {
                     polymer = RecursiveReactThatCausesStackOverflow(polymer.Remove(index - 1, 2));
                 }
@@ -65,9 +80,23 @@ namespace AoC_2018.Solutions
             return polymer;
         }
 
-        private bool IsReactionCondition(char a, char b)
+        private int ReactRemovingProblematicUnit(string polymer)
         {
-            return a != b && char.ToUpperInvariant(a) == char.ToUpperInvariant(b);
+            HashSet<char> existingUnits = polymer.ToUpperInvariant().ToHashSet();
+            Dictionary<char, int> charLength = new Dictionary<char, int>();
+
+            foreach (char unit in existingUnits)
+            {
+                string modifiedPolymer = polymer
+                    .Replace(unit.ToString(), string.Empty)
+                    .Replace(unit.ToString().ToLowerInvariant(), string.Empty);
+
+                string result = CannotBelieveIveImplementedThisReact(modifiedPolymer);
+
+                charLength.Add(unit, result.Length);
+            }
+
+            return charLength.OrderBy(pair => pair.Value).First().Value;
         }
     }
 }
