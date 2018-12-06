@@ -26,34 +26,16 @@ namespace AoC_2018.Solutions
             Console.WriteLine($"Day 6, part 1: {result}");
         }
 
-        private static void ValidateResult(List<Point> allPoints, Dictionary<Point, SurrondingArea> pointsAndItsSurroundingArea)
-        {
-            List<Point> pointList = new List<Point>();
-            foreach (SurrondingArea area in pointsAndItsSurroundingArea.Values)
-            {
-                pointList.AddRange(area.SurroundingGrid);
-            }
-
-            if (pointList.Count != pointList.ToHashSet().Count)
-            {
-                var duplicatedItems = pointList.GroupBy(_ => _).Where(item => item.Count() > 1).Select(item => item.Key).ToList();
-
-                string duplicated = string.Join('\n', duplicatedItems.Select(item => item.ToString()));
-                string orderedByX = string.Join('\n', allPoints.OrderBy(p => p.X).Select(item => item.ToString()));
-                string orderedByY = string.Join('\n', allPoints.OrderBy(p => p.Y).Select(item => item.ToString()));
-
-                duplicatedItems.ForEach(point =>
-                {
-                    var guilty = pointsAndItsSurroundingArea.Where(pair => pair.Value.SurroundingGrid.Contains(point));
-                });
-
-                throw new Exception("Here's the error, repeated points");
-            }
-        }
-
         public void Solve_2()
         {
-            throw new NotImplementedException();
+            List<Point> allPoints = ParseInput().ToList();
+
+            // ~151.000, this can be improved
+            HashSet<Point> candidateLocations = ExtractCandidateLocations(allPoints);
+
+            HashSet<Point> desiredRegion = ExtractDesiredRegion(candidateLocations, allPoints).ToHashSet();
+
+            Console.WriteLine($"Day 6, part 2: {desiredRegion.Count}");
         }
 
         public IEnumerable<Point> ParseInput()
@@ -70,12 +52,34 @@ namespace AoC_2018.Solutions
             }
         }
 
+        private const int _distanceConstraint = 10000;
+
+        private List<Point> ExtractEdgePoints(IEnumerable<Point> allPoints)
+        {
+            return allPoints.Where(point =>
+                allPoints.Max(p => p.X) == point.X
+                || allPoints.Max(p => p.Y) == point.Y
+                || allPoints.Min(p => p.X) == point.X
+                || allPoints.Min(p => p.Y) == point.Y
+            ).ToList();
+        }
+
+        private IEnumerable<Point> GeneratePointRange(IEnumerable<int> xRange, IEnumerable<int> yRange)
+        {
+            foreach (int x in xRange)
+            {
+                foreach (int y in yRange)
+                {
+                    yield return new Point(x, y);
+                }
+            }
+        }
+
+        #region Part 1
         private Dictionary<Point, SurrondingArea> CalculateSurroundingArea(ICollection<Point> allPoints)
         {
             ICollection<Point> edgePoints = ExtractEdgePoints(allPoints);
-
             ICollection<Point> candidatePoints = allPoints.Where(p => !edgePoints.Contains(p)).ToList();
-
             HashSet<Point> areaOfInterest = ExtractAreaOfInterest(edgePoints);
 
             Dictionary<Point, SurrondingArea> result = new Dictionary<Point, SurrondingArea>();
@@ -104,16 +108,6 @@ namespace AoC_2018.Solutions
             return result;
         }
 
-        private List<Point> ExtractEdgePoints(IEnumerable<Point> allPoints)
-        {
-            return allPoints.Where(point =>
-                allPoints.Max(p => p.X) == point.X
-                || allPoints.Max(p => p.Y) == point.Y
-                || allPoints.Min(p => p.X) == point.X
-                || allPoints.Min(p => p.Y) == point.Y
-            ).ToList();
-        }
-
         private HashSet<Point> ExtractAreaOfInterest(ICollection<Point> edgePoints)
         {
             HashSet<Point> areaOfInterest = new HashSet<Point>();
@@ -129,18 +123,32 @@ namespace AoC_2018.Solutions
             return GeneratePointRange(xRange, yRange).ToHashSet();
         }
 
-        private IEnumerable<Point> GeneratePointRange(IEnumerable<int> xRange, IEnumerable<int> yRange)
+        private static void ValidateResult(List<Point> allPoints, Dictionary<Point, SurrondingArea> pointsAndItsSurroundingArea)
         {
-            foreach (int x in xRange)
+            List<Point> pointList = new List<Point>();
+            foreach (SurrondingArea area in pointsAndItsSurroundingArea.Values)
             {
-                foreach (int y in yRange)
+                pointList.AddRange(area.SurroundingGrid);
+            }
+
+            if (pointList.Count != pointList.ToHashSet().Count)
+            {
+                var duplicatedItems = pointList.GroupBy(_ => _).Where(item => item.Count() > 1).Select(item => item.Key).ToList();
+
+                string duplicated = string.Join('\n', duplicatedItems.Select(item => item.ToString()));
+                string orderedByX = string.Join('\n', allPoints.OrderBy(p => p.X).Select(item => item.ToString()));
+                string orderedByY = string.Join('\n', allPoints.OrderBy(p => p.Y).Select(item => item.ToString()));
+
+                duplicatedItems.ForEach(point =>
                 {
-                    yield return new Point(x, y);
-                }
+                    var guilty = pointsAndItsSurroundingArea.Where(pair => pair.Value.SurroundingGrid.Contains(point));
+                });
+
+                throw new Exception("Here's the error, repeated points");
             }
         }
 
-        internal class SurrondingArea
+        private class SurrondingArea
         {
             internal Point Point { get; set; }
 
@@ -156,5 +164,86 @@ namespace AoC_2018.Solutions
                 SurroundingGrid.UnionWith(surroundingGrid);
             }
         }
+        #endregion
+
+        #region Part 2
+        private HashSet<Point> ExtractCandidateLocations(ICollection<Point> allPoints)
+        {
+            HashSet<Point> candidateLocations = new HashSet<Point>();
+
+            List<Point> edgePoints = ExtractEdgePoints(allPoints);
+
+            int minX = edgePoints.Min(p => p.X);
+            int minY = edgePoints.Min(p => p.Y);
+            int maxX = edgePoints.Max(p => p.X);
+            int maxY = edgePoints.Max(p => p.Y);
+
+            var xRange = Enumerable.Range(maxX - _distanceConstraint, minX + _distanceConstraint - (maxX - _distanceConstraint) + 1);
+            var yRange = Enumerable.Range(maxY - _distanceConstraint, minY + _distanceConstraint - (maxY - _distanceConstraint) + 1);
+
+            // 10_000 x 10_0000, not being able to invoke GeneratePointRange yet
+
+            // Providing all points are in minX, but one that is in maxX:
+            ulong extraMinYDistanceToConsider = (ulong)(maxY - minY);   // 160_000 -> ~151_000
+            List<int> curatedXRange = new List<int>();
+            foreach (int x in xRange)
+            {
+                ulong xCounter = 0;
+                foreach (int pX in allPoints.Select(p => p.X))
+                {
+                    xCounter += (ulong)Math.Abs(x - pX);
+                    if (xCounter > _distanceConstraint)
+                    {
+                        break;
+                    }
+                }
+
+                if (xCounter + extraMinYDistanceToConsider <= _distanceConstraint)
+                {
+                    curatedXRange.Add(x);
+                }
+            }
+
+            // Providing all points are in minY, but one that is in maxY:
+            ulong extraMinXDistanceToConsider = (ulong)(maxX - minX);   // 160_000 -> ~151_000
+            List<int> curatedYRange = new List<int>();
+            foreach (int y in yRange)
+            {
+                ulong yCounter = 0;
+                foreach (int pY in allPoints.Select(p => p.Y))
+                {
+                    yCounter += (ulong)Math.Abs(y - pY);
+                    if (yCounter > _distanceConstraint)
+                    {
+                        break;
+                    }
+                }
+
+                if (yCounter + extraMinXDistanceToConsider <= _distanceConstraint)
+                {
+                    curatedYRange.Add(y);
+                }
+            }
+
+            return GeneratePointRange(curatedXRange, curatedYRange).ToHashSet();
+        }
+
+        private IEnumerable<Point> ExtractDesiredRegion(ICollection<Point> candidateLocations, ICollection<Point> allPoints)
+        {
+            foreach (Point candidateLocation in candidateLocations)
+            {
+                int totalDistance = 0;
+                foreach (Point point in allPoints)
+                {
+                    totalDistance += candidateLocation.ManhattanDistance(point);
+                }
+
+                if (totalDistance < _distanceConstraint)
+                {
+                    yield return candidateLocation;
+                }
+            }
+        }
+        #endregion
     }
 }
