@@ -26,13 +26,7 @@ namespace AoC_2018.Solutions
 
             HashSet<Point> repeatedPoints = ExtractRepeatedPoints(rectangles);
 
-            Rectangle nonOverlappedRectangle_1 = ExtractNonOverlappedRectangle_IterativeImplementation(rectangles, repeatedPoints);
-            Rectangle nonOverlappedRectangle_2 = ExtractNonOverlappedRectangle_LinqImplementation(rectangles, repeatedPoints);
-
-            if (nonOverlappedRectangle_1.Id != nonOverlappedRectangle_2.Id)
-            {
-                throw new Exception("At least one of ExtractNonOverlappedRectangle implementations is wrong");
-            }
+            Rectangle nonOverlappedRectangle_1 = ExtractNonOverlappedRectangle_ManualImplementation(rectangles, repeatedPoints);
 
             Console.Write($"Day 3, part 2: {nonOverlappedRectangle_1.Id}");
         }
@@ -110,7 +104,7 @@ namespace AoC_2018.Solutions
         /// <param name="rectangles"></param>
         /// <param name="repeatedPoints"></param>
         /// <returns></returns>
-        private Rectangle ExtractNonOverlappedRectangle_IterativeImplementation(List<Rectangle> rectangles, HashSet<Point> repeatedPoints)
+        private Rectangle ExtractNonOverlappedRectangle_ManualImplementation(List<Rectangle> rectangles, HashSet<Point> repeatedPoints)
         {
             List<Rectangle> nonOverlappedRectangles = new List<Rectangle>();
 
