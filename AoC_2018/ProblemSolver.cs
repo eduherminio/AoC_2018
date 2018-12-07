@@ -16,7 +16,24 @@ namespace AoC_2018
             Solve(problem);
         }
 
+        internal static void SolveWithMetrics<TProblem>()
+            where TProblem : IProblem, new()
+        {
+            IProblem problem = new TProblem();
+
+            SolveWithMetrics(problem);
+        }
+
         internal static void SolveAllProblems()
+        {
+            foreach (Type problemType in LoadAllProblems())
+            {
+                (Activator.CreateInstance(problemType) as IProblem)
+                    .Solve();
+            }
+        }
+
+        internal static void SolveAllProblemsWithMetrics()
         {
             foreach (Type problemType in LoadAllProblems())
             {

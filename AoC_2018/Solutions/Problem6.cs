@@ -76,20 +76,20 @@ namespace AoC_2018.Solutions
         }
 
         #region Part 1
-        private Dictionary<Point, SurrondingArea> CalculateSurroundingArea(ICollection<Point> allPoints)
+        private Dictionary<Point, SurroundingArea> CalculateSurroundingArea(ICollection<Point> allPoints)
         {
             ICollection<Point> edgePoints = ExtractEdgePoints(allPoints);
             ICollection<Point> candidatePoints = allPoints.Where(p => !edgePoints.Contains(p)).ToList();
             HashSet<Point> areaOfInterest = ExtractAreaOfInterest(edgePoints);
 
-            Dictionary<Point, SurrondingArea> result = new Dictionary<Point, SurrondingArea>();
+            Dictionary<Point, SurroundingArea> result = new Dictionary<Point, SurroundingArea>();
 
             foreach (Point point in areaOfInterest)
             {
                 Point closestPoint = point.CalculateClosestManhattanPointNotTied(allPoints);
 
                 if (closestPoint != null
-                    && !result.TryAdd(closestPoint, new SurrondingArea(point, new[] { point })))
+                    && !result.TryAdd(closestPoint, new SurroundingArea(point, new[] { point })))
                 {
                     result[closestPoint].SurroundingGrid.Add(point);
                 }
@@ -123,10 +123,10 @@ namespace AoC_2018.Solutions
             return GeneratePointRange(xRange, yRange).ToHashSet();
         }
 
-        private static void ValidateResult(List<Point> allPoints, Dictionary<Point, SurrondingArea> pointsAndItsSurroundingArea)
+        private static void ValidateResult(List<Point> allPoints, Dictionary<Point, SurroundingArea> pointsAndItsSurroundingArea)
         {
             List<Point> pointList = new List<Point>();
-            foreach (SurrondingArea area in pointsAndItsSurroundingArea.Values)
+            foreach (SurroundingArea area in pointsAndItsSurroundingArea.Values)
             {
                 pointList.AddRange(area.SurroundingGrid);
             }
@@ -148,7 +148,7 @@ namespace AoC_2018.Solutions
             }
         }
 
-        private class SurrondingArea
+        private class SurroundingArea
         {
             internal Point Point { get; set; }
 
@@ -156,7 +156,7 @@ namespace AoC_2018.Solutions
 
             internal long Area => SurroundingGrid.Count;
 
-            internal SurrondingArea(Point point, ICollection<Point> surroundingGrid)
+            internal SurroundingArea(Point point, ICollection<Point> surroundingGrid)
             {
                 Point = point;
 
