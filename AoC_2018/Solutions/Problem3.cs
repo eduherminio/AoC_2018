@@ -88,19 +88,16 @@ namespace AoC_2018.Solutions
             return rectangles;
         }
 
-        private HashSet<Point> ExtractRepeatedPoints(List<Rectangle> rectangles)
+        private HashSet<Point> ExtractRepeatedPoints(IEnumerable<Rectangle> rectangles)
         {
             HashSet<Point> evaluatedPoints = new HashSet<Point>();
             HashSet<Point> repeatedPoints = new HashSet<Point>();
 
-            foreach (Rectangle rectangle in rectangles)
+            foreach (Point point in rectangles.SelectMany(r => r.PointSet))
             {
-                foreach (Point point in rectangle.PointSet)
+                if (!evaluatedPoints.Add(point))
                 {
-                    if (!evaluatedPoints.Add(point))
-                    {
-                        repeatedPoints.Add(point);
-                    }
+                    repeatedPoints.Add(point);
                 }
             }
 
