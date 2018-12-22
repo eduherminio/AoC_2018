@@ -65,7 +65,7 @@ namespace AoC_2018.Solutions
                 parsedLine.NextElement<string>();
 
                 string dependencyName = parsedLine.NextElement<string>();
-                Step stepDependency = new Step(dependencyName);
+                Step stepDependency = new Step(dependencyName.Single());
                 steps.Add(stepDependency);
 
                 while (!parsedLine.Empty)
@@ -76,13 +76,13 @@ namespace AoC_2018.Solutions
                     {
                         string mainStepName = parsedLine.NextElement<string>();
 
-                        if (steps.TryGetValue(new Step(mainStepName), out Step existingStep))
+                        if (steps.TryGetValue(new Step(mainStepName.Single()), out Step existingStep))
                         {
                             existingStep.NonResolvedDependencies.Add(stepDependency);
                         }
                         else
                         {
-                            steps.Add(new Step(mainStepName, stepDependency));
+                            steps.Add(new Step(mainStepName.Single(), stepDependency));
                         }
                         continue;
                     }
@@ -93,17 +93,17 @@ namespace AoC_2018.Solutions
 
         private class Step
         {
-            public string Name { get; set; }
+            public char Name { get; set; }
 
             public HashSet<Step> NonResolvedDependencies { get; set; }
 
-            public Step(string name)
+            public Step(char name)
             {
                 Name = name;
                 NonResolvedDependencies = new HashSet<Step>();
             }
 
-            public Step(string name, Step dependency)
+            public Step(char name, Step dependency)
             {
                 Name = name;
                 NonResolvedDependencies = new HashSet<Step> { dependency };
