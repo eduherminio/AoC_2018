@@ -19,6 +19,54 @@ namespace AoC_2018.Solutions
             Console.Write($"Day 7, part 1: {result}");
         }
 
+        public void Solve_2()
+        {
+            ICollection<Step> unorderedSteps = ParseInput();
+
+            int result = ApplyPart2Algorithm(unorderedSteps);
+
+            Console.Write($"Day 7, part 2: {result}");
+        }
+
+        private HashSet<Step> ParseInput()
+        {
+            HashSet<Step> steps = new HashSet<Step>();
+
+            IParsedFile parsedFile = new ParsedFile(FilePath);
+
+            while (!parsedFile.Empty)
+            {
+                IParsedLine parsedLine = parsedFile.NextLine();
+
+                parsedLine.NextElement<string>();
+
+                string dependencyName = parsedLine.NextElement<string>();
+                Step stepDependency = new Step(char.ToUpperInvariant(dependencyName.Single()));
+                steps.Add(stepDependency);
+
+                while (!parsedLine.Empty)
+                {
+                    string word = parsedLine.NextElement<string>();
+
+                    if (word.ToUpperInvariant() == "STEP")
+                    {
+                        string mainStepName = parsedLine.NextElement<string>();
+
+                        if (steps.TryGetValue(new Step(char.ToUpperInvariant(mainStepName.Single())), out Step existingStep))
+                        {
+                            existingStep.NonResolvedDependencies.Add(stepDependency);
+                        }
+                        else
+                        {
+                            steps.Add(new Step(mainStepName.Single(), stepDependency));
+                        }
+                        continue;
+                    }
+                }
+            }
+            return steps;
+        }
+
         private string ApplyPart1Algorithm(ICollection<Step> unorderedSteps)
         {
             string result = string.Empty;
@@ -46,19 +94,10 @@ namespace AoC_2018.Solutions
             return result;
         }
 
-        public void Solve_2()
-        {
-            ICollection<Step> unorderedSteps = ParseInput();
-
-            int result = ApplyPart2Algorithm(unorderedSteps);
-
-            Console.Write($"Day 7, part 2: {result}");
-        }
-
         private int ApplyPart2Algorithm(ICollection<Step> unorderedSteps)
         {
             string result = string.Empty;
-            const int totalAvailableWorkers = 5;     // Yourself and for Elves
+            const int totalAvailableWorkers = 5;     // Yourself and four Elves
 
             IDictionary<int, Step> workersTimetable = new Dictionary<int, Step>(totalAvailableWorkers)
             {
@@ -81,12 +120,6 @@ namespace AoC_2018.Solutions
             }
 
             return secondsSpent;
-        }
-
-
-        private IEnumerable<int> AvailableWorkers(IDictionary<int, Step> workersTimetable)
-        {
-            return workersTimetable.Where(pair => pair.Value == null).Select(tuple => tuple.Key);
         }
 
         private void AssignWorkers(ref ICollection<Step> unorderedSteps, ref IDictionary<int, Step> workersTimetable)
@@ -144,43 +177,9 @@ namespace AoC_2018.Solutions
             }
         }
 
-        private HashSet<Step> ParseInput()
+        private IEnumerable<int> AvailableWorkers(IDictionary<int, Step> workersTimetable)
         {
-            HashSet<Step> steps = new HashSet<Step>();
-
-            IParsedFile parsedFile = new ParsedFile(FilePath);
-
-            while (!parsedFile.Empty)
-            {
-                IParsedLine parsedLine = parsedFile.NextLine();
-
-                parsedLine.NextElement<string>();
-
-                string dependencyName = parsedLine.NextElement<string>();
-                Step stepDependency = new Step(char.ToUpperInvariant(dependencyName.Single()));
-                steps.Add(stepDependency);
-
-                while (!parsedLine.Empty)
-                {
-                    string word = parsedLine.NextElement<string>();
-
-                    if (word.ToUpperInvariant() == "STEP")
-                    {
-                        string mainStepName = parsedLine.NextElement<string>();
-
-                        if (steps.TryGetValue(new Step(char.ToUpperInvariant(mainStepName.Single())), out Step existingStep))
-                        {
-                            existingStep.NonResolvedDependencies.Add(stepDependency);
-                        }
-                        else
-                        {
-                            steps.Add(new Step(mainStepName.Single(), stepDependency));
-                        }
-                        continue;
-                    }
-                }
-            }
-            return steps;
+            return workersTimetable.Where(pair => pair.Value == null).Select(tuple => tuple.Key);
         }
 
         private class Step

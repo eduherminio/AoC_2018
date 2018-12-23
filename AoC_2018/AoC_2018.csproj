@@ -1,7 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
+    <LangVersion>7.3</LangVersion>
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
@@ -10,33 +11,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Solutions\Problem7.cs">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Compile>
+    <ItemsToCopy Include="$(MSBuildThisFileDirectory)\Inputs\*.*" />
   </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Inputs\1.in">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Inputs\2.in">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Inputs\3.in">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Inputs\4.in">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Inputs\5.in">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Inputs\6.in">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Inputs\7.in">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+  
+  <Target Name="CopyInputFilesToOutputDir" AfterTargets="Build">
+    <Copy
+        SourceFiles="@(ItemsToCopy)"
+        DestinationFolder="$(OutputPath)\Inputs"
+    />
+  </Target>
 
 </Project>
