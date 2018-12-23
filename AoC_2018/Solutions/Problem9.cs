@@ -14,14 +14,14 @@ namespace AoC_2018.Solutions
         public void Solve_1()
         {
             var input = ParseInput();
-            //int numberOfPlayers = input.Item1;
-            //int numberOfMarbles = input.Item2;
+            int numberOfPlayers = input.Item1;
+            int numberOfMarbles = input.Item2;
 
             //int numberOfPlayers = 9;
             //int numberOfMarbles = 25;
 
-            int numberOfPlayers = 10;
-            int numberOfMarbles = 1618;
+            //int numberOfPlayers = 13;
+            //int numberOfMarbles = 7999;
 
             Dictionary<int, int> playerPointPairs = new Dictionary<int, int>(numberOfMarbles);
             for (int i = 0; i < numberOfPlayers; ++i)
@@ -39,14 +39,14 @@ namespace AoC_2018.Solutions
             for (int marbleIndex = 2; marbleIndex <= numberOfMarbles; ++marbleIndex)
             {
                 ++turn;
-                turn %= numberOfPlayers;    // 1 - numberOfPlayers
+                turn %= numberOfPlayers;
 
                 if (marbleIndex % 23 == 0)
                 {
                     int indexOfMarbleToRemove =
                         (indexOfCurrentMarble - 7) > 0
                         ? indexOfCurrentMarble - 7
-                        : (field.Count - 1) + (indexOfCurrentMarble - 7);
+                        : field.Count + (indexOfCurrentMarble - 7);
 
                     playerPointPairs[turn] += marbleIndex + field.ElementAt(indexOfMarbleToRemove);
 
