@@ -20,14 +20,9 @@ namespace AoC_2018.Solutions
         {
             ParseInput();
 
-            long checkSum = 0;
+            long checkSum = _nodes.SelectMany(node => node.Metadata).Sum();
 
-            foreach (int metadata in _nodes.SelectMany(node => node.Metadata))
-            {
-                checkSum += metadata;
-            }
-
-            Console.Write($"Day 8, part 1: {checkSum}");
+            Console.Write($"Day 8, part 2: {checkSum}");
         }
 
         public void Solve_2()
@@ -60,28 +55,22 @@ namespace AoC_2018.Solutions
         {
             while (_intStack.Any())
             {
-                ParseNode();
+                ParseNode(-1);
             }
         }
 
-        private int ApplyPart2Algorithm()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void ParseNode()
+        private void ParseNode(int parentId)
         {
             ++_id;
-            Console.WriteLine(_id);
 
-            MetadataNode node = new MetadataNode(_id) { ParentId = _id - 1 };
+            MetadataNode node = new MetadataNode(_id) { ParentId = parentId };
 
             int nChildNodes = _intStack.Pop();
             int nMetadataEntries = _intStack.Pop();
 
             for (int i = 0; i < nChildNodes; ++i)
             {
-                ParseNode();
+                ParseNode(node.Id);
             }
 
             for (int i = 0; i < nMetadataEntries; ++i)
@@ -90,6 +79,43 @@ namespace AoC_2018.Solutions
             }
 
             _nodes.Add(node);
+        }
+
+        private readonly static IDictionary<MetadataNode, int> _nodeValuePair = new Dictionary<MetadataNode, int>();
+
+        private int ApplyPart2Algorithm()
+        {
+            MetadataNode rootNode = _nodes.Single(n => n.Id == 0 && n.ParentId == -1);
+
+            return CalculateNodeValue(rootNode);
+        }
+
+        private int CalculateNodeValue(MetadataNode node)
+        {
+            if (_nodeValuePair.TryGetValue(node, out int value))
+            {
+                return value;
+            }
+
+            var children = _nodes.Where(n => n.ParentId == node.Id).ToList();
+
+            if (children.Any())
+            {
+                foreach (int metadata in node.Metadata)
+                {
+                    if (metadata > 0 && metadata <= children.Count)
+                    {
+                        value += CalculateNodeValue(children.ElementAt(metadata - 1));
+                    }
+                }
+            }
+            else
+            {
+                value = node.Metadata.Sum(_ => _);
+            }
+
+            _nodeValuePair.Add(node, value);
+            return value;
         }
 
         private class MetadataNode : Node<int>

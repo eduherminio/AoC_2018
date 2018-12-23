@@ -9,8 +9,6 @@ namespace AoC_2018.Model
         public TKey ParentId { get; set; }
         public TKey Id { get; set; }
 
-        public HashSet<Node<TKey>> Children { get; set; }
-
         public Node(TKey id)
         {
             Id = id;
