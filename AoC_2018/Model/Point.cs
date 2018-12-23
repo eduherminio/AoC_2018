@@ -72,7 +72,7 @@ namespace AoC_2018.Model
                 return false;
             }
 
-            if ((obj is Point))
+            if (!(obj is Point))
             {
                 return false;
             }
@@ -87,7 +87,7 @@ namespace AoC_2018.Model
                 return false;
             }
 
-            return Y == other.Y;
+            return X == other.X && Y == other.Y;
         }
 
         public static bool operator ==(Point point1, Point point2)
