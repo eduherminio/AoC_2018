@@ -24,3 +24,16 @@ Day 8, part 1: 20083                            21 ms
 
 Day 9, part 1: 404502                           120 ms
 Day 9, part 2: 3243916887                               4116,361 s
+
+XXXXXX----XX----XXXXXX--XXXXXX--XXXXX---X-------XXXXXX---XXXX-
+-----X---X--X---X------------X--X----X--X------------X--X----X
+-----X--X----X--X------------X--X----X--X------------X--X-----
+----X---X----X--X-----------X---X----X--X-----------X---X-----
+---X----X----X--XXXXX------X----XXXXX---X----------X----X-----
+--X-----XXXXXX--X---------X-----X--X----X---------X-----X--XXX
+-X------X----X--X--------X------X---X---X--------X------X----X
+X-------X----X--X-------X-------X---X---X-------X-------X----X
+X-------X----X--X-------X-------X----X--X-------X-------X---XX
+XXXXXX--X----X--XXXXXX--XXXXXX--X----X--XXXXXX--XXXXXX---XXX-X
+Day 10, part 1 (they are 'Z', not '2', in case you're wondering)		3,398 s
+Day 10, part 2: 10105                           3,398 s

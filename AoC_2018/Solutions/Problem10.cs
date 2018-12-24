@@ -1,4 +1,5 @@
-﻿using AoC_2018.Model;
+﻿using AoC_2018.Helpers;
+using AoC_2018.Model;
 using FileParser;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace AoC_2018.Solutions
                 end = PrintStarsPosition(stars);
             } while (!end);
 
-            Console.Write($"\nDay 10, part 1 (they are 'Z', not '2', in case you're wondering");
+            Console.Write($"\nDay 10, part 1 (they are 'Z', not '2', in case you're wondering)");
         }
 
         public void Solve_2()
@@ -106,8 +107,8 @@ namespace AoC_2018.Solutions
             {
                 Console.Clear();
 
-                var xRange = Enumerable.Range(downLeft.X, upRight.X - downLeft.X + 1);
-                var yRange = Enumerable.Range(downLeft.Y, upRight.Y - downLeft.Y + 1);
+                var xRange = RangeHelpers.GenerateRange(minValue: downLeft.X, maxValue: upRight.X);
+                var yRange = RangeHelpers.GenerateRange(minValue: downLeft.Y, maxValue: upRight.Y);
 
                 var points = Point.GeneratePointRangeIteratingOverXFirst(xRange, yRange);
                 int y0 = points.First().Y;

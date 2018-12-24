@@ -15,10 +15,7 @@
   </ItemGroup>
   
   <Target Name="CopyInputFilesToOutputDir" AfterTargets="Build">
-    <Copy
-        SourceFiles="@(ItemsToCopy)"
-        DestinationFolder="$(OutputPath)\Inputs"
-    />
+    <Copy SourceFiles="@(ItemsToCopy)" DestinationFolder="$(OutputPath)\Inputs" />
   </Target>
 
 </Project>

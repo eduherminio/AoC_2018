@@ -1,4 +1,5 @@
-﻿using AoC_2018.Model;
+﻿using AoC_2018.Helpers;
+using AoC_2018.Model;
 using FileParser;
 using System;
 using System.Collections.Generic;
@@ -102,8 +103,8 @@ namespace AoC_2018.Solutions
             int maxX = edgePoints.Max(p => p.X);
             int maxY = edgePoints.Max(p => p.Y);
 
-            var xRange = Enumerable.Range(minX, maxX - minX + 1);
-            var yRange = Enumerable.Range(minY, maxY - minY + 1);
+            var xRange = RangeHelpers.GenerateRange(minValue: minX, maxValue: maxX);
+            var yRange = RangeHelpers.GenerateRange(minValue: minY, maxValue: maxY);
 
             return Point.GeneratePointRangeIteratingOverYFirst(xRange, yRange).ToHashSet();
         }
@@ -163,8 +164,8 @@ namespace AoC_2018.Solutions
             int maxX = edgePoints.Max(p => p.X);
             int maxY = edgePoints.Max(p => p.Y);
 
-            var xRange = Enumerable.Range(maxX - _distanceConstraint, minX + _distanceConstraint - (maxX - _distanceConstraint) + 1);
-            var yRange = Enumerable.Range(maxY - _distanceConstraint, minY + _distanceConstraint - (maxY - _distanceConstraint) + 1);
+            var xRange = RangeHelpers.GenerateRange(minValue: (maxX - _distanceConstraint), maxValue: minX + _distanceConstraint);
+            var yRange = RangeHelpers.GenerateRange(minValue: (maxY - _distanceConstraint), maxValue: minY + _distanceConstraint);
 
             // 10_000 x 10_0000, not being able to invoke GeneratePointRange yet
 
