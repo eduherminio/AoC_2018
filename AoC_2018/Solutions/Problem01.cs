@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using FileParser;
 
 namespace AoC_2018.Solutions
 {
-    class Problem1 : IProblem
+    public class Problem01: BaseProblem, IProblem
     {
-        public string FilePath => Path.Combine("Inputs", "1.in");
-
         public void Solve_1()
         {
             IEnumerable<long> frequencyChanges = ParseInput();

@@ -5,10 +5,8 @@ using System.Linq;
 
 namespace AoC_2018.Solutions
 {
-    class Problem5 : IProblem
+    public class Problem05: BaseProblem, IProblem
     {
-        public string FilePath => Path.Combine("Inputs", "5.in");
-
         public void Solve_1()
         {
             string input = ParseInput();

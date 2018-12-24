@@ -2,16 +2,12 @@
 using FileParser;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace AoC_2018.Solutions
 {
-    class Problem6 : IProblem
+    public class Problem06 : BaseProblem, IProblem
     {
-        public string FilePath => Path.Combine("Inputs", "6.in");
-
         public void Solve_1()
         {
             List<Point> allPoints = ParseInput().ToList();
@@ -38,7 +34,7 @@ namespace AoC_2018.Solutions
             Console.Write($"Day 6, part 2: {desiredRegion.Count}");
         }
 
-        public IEnumerable<Point> ParseInput()
+        private IEnumerable<Point> ParseInput()
         {
             IParsedFile parsedFile = new ParsedFile(FilePath);
 

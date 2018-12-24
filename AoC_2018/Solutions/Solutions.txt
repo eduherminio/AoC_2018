@@ -1,0 +1,26 @@
+﻿Day 1, part 1: 484                              178 ms
+Day 1, part 2: 367                              391 ms
+
+Day 2, part 1: 6422                             29 ms
+Day 2, part 2: qcslyvphgkrmdawljuefotxbh                                5 ms
+
+Day 3, part 1: 101565                           6,743 s
+Day 3, part 2: 656                              6,493 s
+
+Day 4, part 1: 84834                            32 ms
+Day 4, part 2: 53427                            14 ms
+
+Day 5, part 1: 10978                            2,683 s
+Day 5, part 2: 4840                             2,973 s
+
+Day 6, part 1: 3604                             9,129 s
+Day 6, part 2: 46563                            2,388 s
+
+Day 7, part 1: EFHLMTKQBWAPGIVXSZJRDUYONC                               14 ms
+Day 7, part 2: 1056                             18 ms
+
+Day 8, part 2: 36891                            36 ms
+Day 8, part 1: 20083                            21 ms
+
+Day 9, part 1: 404502                           120 ms
+Day 9, part 2: 3243916887                               4116,361 s

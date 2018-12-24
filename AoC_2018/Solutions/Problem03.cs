@@ -2,15 +2,12 @@
 using FileParser;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace AoC_2018.Solutions
 {
-    class Problem3 : IProblem
+    public class Problem03: BaseProblem, IProblem
     {
-        public string FilePath => Path.Combine("Inputs", "3.in");
-
         public void Solve_1()
         {
             List<Rectangle> rectangles = ParseInput().ToList();

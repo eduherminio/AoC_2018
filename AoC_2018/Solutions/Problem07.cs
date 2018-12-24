@@ -1,15 +1,12 @@
 ﻿using FileParser;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace AoC_2018.Solutions
 {
-    public class Problem7 : IProblem
+    public class Problem07: BaseProblem, IProblem
     {
-        public string FilePath => Path.Combine("Inputs", "7.in");
-
         public void Solve_1()
         {
             ICollection<Step> unorderedSteps = ParseInput();

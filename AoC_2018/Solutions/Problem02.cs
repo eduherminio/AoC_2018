@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using FileParser;
 
 namespace AoC_2018.Solutions
 {
-    class Problem2 : IProblem
+    public class Problem02: BaseProblem, IProblem
     {
-        public string FilePath => Path.Combine("Inputs", "2.in");
-
         public void Solve_1()
         {
             IEnumerable<string> ids = ParseInput();

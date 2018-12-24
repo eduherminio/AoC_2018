@@ -1,18 +1,13 @@
 ﻿using AoC_2018.Model;
 using FileParser;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace AoC_2018.Solutions
 {
-    public class Problem8 : IProblem
+    public class Problem08 : BaseProblem, IProblem
     {
-        public string FilePath => Path.Combine("Inputs", "8.in");
-
         private HashSet<MetadataNode> _nodes = new HashSet<MetadataNode>();
         Stack<int> _intStack;
 
