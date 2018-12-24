@@ -17,13 +17,25 @@ namespace AoC_2018.Solutions
             int numberOfPlayers = input.Item1;
             int numberOfMarbles = input.Item2;
 
-            //int numberOfPlayers = 9;
-            //int numberOfMarbles = 25;
+            ulong winner = SolveMarbleGame(numberOfPlayers, numberOfMarbles);
 
-            //int numberOfPlayers = 13;
-            //int numberOfMarbles = 7999;
+            Console.Write($"Day 9, part 1: {winner}");
+        }
 
-            Dictionary<int, int> playerPointPairs = new Dictionary<int, int>(numberOfMarbles);
+        public void Solve_2()
+        {
+            var input = ParseInput();
+            int numberOfPlayers = input.Item1;
+            int numberOfMarbles = 100 * input.Item2;
+
+            ulong winner = SolveMarbleGame(numberOfPlayers, numberOfMarbles);
+
+            Console.Write($"Day 9, part 2: {winner}");
+        }
+
+        private static ulong SolveMarbleGame(int numberOfPlayers, int numberOfMarbles)
+        {
+            Dictionary<int, ulong> playerPointPairs = new Dictionary<int, ulong>(numberOfMarbles);
             for (int i = 0; i < numberOfPlayers; ++i)
             {
                 playerPointPairs.Add(i, 0);
@@ -48,7 +60,7 @@ namespace AoC_2018.Solutions
                         ? indexOfCurrentMarble - 7
                         : field.Count + (indexOfCurrentMarble - 7);
 
-                    playerPointPairs[turn] += marbleIndex + field.ElementAt(indexOfMarbleToRemove);
+                    playerPointPairs[turn] += (ulong)(marbleIndex + field.ElementAt(indexOfMarbleToRemove));
 
                     indexOfCurrentMarble = indexOfMarbleToRemove;
 
@@ -73,14 +85,7 @@ namespace AoC_2018.Solutions
                 }
             }
 
-            int winner = playerPointPairs.Max(pair => pair.Value);
-
-            Console.Write($"Day 9, part 1: {winner}");
-        }
-
-        public void Solve_2()
-        {
-            throw new NotImplementedException();
+            return (playerPointPairs.Max(pair => pair.Value));
         }
 
         public Tuple<int, int> ParseInput()
