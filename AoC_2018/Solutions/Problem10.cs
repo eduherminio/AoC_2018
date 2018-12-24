@@ -29,7 +29,23 @@ namespace AoC_2018.Solutions
 
         public void Solve_2()
         {
-            throw new NotImplementedException();
+            HashSet<Star> stars = FilterInput(ParseInput());
+
+            // 342 stars, from [~-50_000,~-50_000] to [~+50_000, ~+50_000] initially
+
+            PrintStarsPosition(stars);
+
+            bool end = false;
+            int seconds = 0;
+            do
+            {
+                ++seconds;
+                SimulateOneSecond(ref stars);
+
+                end = PrintStarsPosition(stars);
+            } while (!end);
+
+            Console.Write($"\nDay 10, part 2: {seconds}");
         }
 
         private IEnumerable<Star> ParseInput()
@@ -104,34 +120,27 @@ namespace AoC_2018.Solutions
                         Console.WriteLine();
                     }
 
-                    if (stars.Any(star => star.X == point.X && star.Y == point.Y))
-                    {
-                        Console.Write("X");
-                    }
-                    else
-                    {
-                        Console.Write("-");
-                    }
+                    Console.Write(
+                        stars.Any(star => star.X == point.X && star.Y == point.Y)
+                        ? "X"
+                        : "-");
                 }
 
                 Console.WriteLine();
-                string end = Console.ReadLine();
 
-                return end.ToUpperInvariant() == "Y";
+                // Automatic end
+                if (Math.Abs(downLeft.X - upRight.X) == 61
+                    && Math.Abs(downLeft.Y - upRight.Y) == 9)
+                {
+                    return true;
+                }
+
+                // Manual end
+                //string end = Console.ReadLine();
+                //return end.ToUpperInvariant() == "Y";
             }
 
             return false;
-        }
-
-        private IEnumerable<Point> GeneratePointRange(IEnumerable<int> xRange, IEnumerable<int> yRange)
-        {
-            foreach (int x in xRange)
-            {
-                foreach (int y in yRange)
-                {
-                    yield return new Point(x, y);
-                }
-            }
         }
 
         private class Star : Point
