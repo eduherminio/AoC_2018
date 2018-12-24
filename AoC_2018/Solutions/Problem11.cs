@@ -42,10 +42,14 @@ namespace AoC_2018.Solutions
             //pointPowerLevel = Solve2_BruteForce(maxSquareSize, grid, pointPowerLevel);
 
             Dictionary<Point, Tuple<int, int>> pointSquareTotalPowerSquareSize = new Dictionary<Point, Tuple<int, int>>();
-            foreach (Point point in grid)
+            foreach (Point point in grid.Reverse())
             {
                 EvaluatePointPowerLevelWithDifferentSquareSizes(point, grid, ref pointPowerLevel, ref pointSquareTotalPowerSquareSize);
             }
+
+            var max = pointSquareTotalPowerSquareSize.OrderByDescending(pair => pair.Value.Item1).First();
+
+            Console.WriteLine($"{max.Key}, {max.Value.Item1}, {max.Value.Item2}");
         }
 
         private Dictionary<Point, int> Solve2_BruteForce(int maxSquareSize, IEnumerable<Point> grid, Dictionary<Point, int> pointPowerLevel)
@@ -150,6 +154,9 @@ namespace AoC_2018.Solutions
             int maxSquareSize = Math.Min(Math.Abs(300 - point.X), Math.Abs(300 - point.Y));
             IEnumerable<int> sizeRange = RangeHelpers.GenerateRange(1, maxSquareSize);
 
+            Dictionary<int, int> squareSizeValues = new Dictionary<int, int>();
+
+            HashSet<Point> previousSizePoints = new HashSet<Point>();
             foreach (int squareSize in sizeRange)
             {
                 Console.WriteLine($"  Evaluating power level for squares sized {squareSize}");
@@ -165,32 +172,70 @@ namespace AoC_2018.Solutions
                     RangeHelpers.GenerateRange(point.Y, point.Y + (squareSize - 1)));
 
                 int totalPower = 0;
-                foreach (Point p in points)
+                if (previousSizePoints.Any())
                 {
-                    if (pointPowerLevel.TryGetValue(p, out int pPower))
+                    var newPoints = points.ToHashSet().Except(previousSizePoints);
+                    int newPower = 0;
+                    foreach (Point p in newPoints)
                     {
-                        totalPower += pPower;
+                        if (pointPowerLevel.TryGetValue(p, out int pPower))
+                        {
+                            newPower += pPower;
+                        }
+                        else
+                        {
+                            pPower = CalculatePowerLevel(p);
+                            pointPowerLevel.Add(p, pPower);
+                            newPower += pPower;
+                        }
                     }
-                    else
-                    {
-                        pPower = CalculatePowerLevel(p);
-                        pointPowerLevel.Add(p, pPower);
-                        totalPower += pPower;
-                    }
-                }
 
-                if (pointSquareTotalPowerSquareSize.TryGetValue(point, out var value))
-                {
-                    if(totalPower > value.Item1)
-                    {
-                        pointSquareTotalPowerSquareSize[point] = Tuple.Create(totalPower, squareSize);
-                    }
+                    //if (newPower < 0)
+                    //{
+                    //    continue;
+                    //}
+
+                    totalPower = squareSizeValues.Last().Value + newPower;
+                    previousSizePoints.UnionWith(newPoints.ToHashSet());
                 }
                 else
                 {
-                    pointSquareTotalPowerSquareSize[point] = Tuple.Create(totalPower, squareSize);
+                    foreach (Point p in points)
+                    {
+                        if (pointPowerLevel.TryGetValue(p, out int pPower))
+                        {
+                            totalPower += pPower;
+                        }
+                        else
+                        {
+                            pPower = CalculatePowerLevel(p);
+                            pointPowerLevel.Add(p, pPower);
+                            totalPower += pPower;
+                        }
+                    }
+
+                    if (pointSquareTotalPowerSquareSize.TryGetValue(point, out var value))
+                    {
+                        if (totalPower > value.Item1)
+                        {
+                            pointSquareTotalPowerSquareSize[point] = Tuple.Create(totalPower, squareSize);
+                        }
+                    }
+                    else
+                    {
+                        pointSquareTotalPowerSquareSize[point] = Tuple.Create(totalPower, squareSize);
+                    }
+                    previousSizePoints = points.ToHashSet();
                 }
+                squareSizeValues.Add(squareSize, totalPower);
             }
+
+            if (squareSizeValues.Any())
+            {
+                var max = squareSizeValues.OrderByDescending(pair => pair.Value).First();
+                pointSquareTotalPowerSquareSize[point] = Tuple.Create(max.Value, max.Key);
+            }
+
         }
 
         private void CalculatePowerLevelTest()
