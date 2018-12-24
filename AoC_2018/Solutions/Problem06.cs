@@ -60,17 +60,6 @@ namespace AoC_2018.Solutions
             ).ToList();
         }
 
-        private IEnumerable<Point> GeneratePointRange(IEnumerable<int> xRange, IEnumerable<int> yRange)
-        {
-            foreach (int x in xRange)
-            {
-                foreach (int y in yRange)
-                {
-                    yield return new Point(x, y);
-                }
-            }
-        }
-
         #region Part 1
         private Dictionary<Point, SurroundingArea> CalculateSurroundingArea(ICollection<Point> allPoints)
         {
@@ -116,7 +105,7 @@ namespace AoC_2018.Solutions
             var xRange = Enumerable.Range(minX, maxX - minX + 1);
             var yRange = Enumerable.Range(minY, maxY - minY + 1);
 
-            return GeneratePointRange(xRange, yRange).ToHashSet();
+            return Point.GeneratePointRange(xRange, yRange).ToHashSet();
         }
 
         private static void ValidateResult(List<Point> allPoints, Dictionary<Point, SurroundingArea> pointsAndItsSurroundingArea)
@@ -221,7 +210,7 @@ namespace AoC_2018.Solutions
                 }
             }
 
-            return GeneratePointRange(curatedXRange, curatedYRange).ToHashSet();
+            return Point.GeneratePointRange(curatedXRange, curatedYRange).ToHashSet();
         }
 
         private IEnumerable<Point> ExtractDesiredRegion(ICollection<Point> candidateLocations, ICollection<Point> allPoints)

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AoC_2018.Model
 {
-    public class Node<TKey>
+    internal class Node<TKey>
     {
         public TKey ParentId { get; set; }
         public TKey Id { get; set; }

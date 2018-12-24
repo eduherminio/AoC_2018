@@ -59,6 +59,28 @@ namespace AoC_2018.Model
                 : null;
         }
 
+        static public IEnumerable<Point> GeneratePointRange(IEnumerable<int> xRange, IEnumerable<int> yRange)
+        {
+            foreach (int x in xRange)
+            {
+                foreach (int y in yRange)
+                {
+                    yield return new Point(x, y);
+                }
+            }
+        }
+
+        static public IEnumerable<Point> GenerateAlternativePointRange(IEnumerable<int> xRange, IEnumerable<int> yRange)
+        {
+            foreach (int y in yRange)
+            {
+                foreach (int x in xRange)
+                {
+                    yield return new Point(x, y);
+                }
+            }
+        }
+
         #region Equals override
         public override int GetHashCode()
         {
