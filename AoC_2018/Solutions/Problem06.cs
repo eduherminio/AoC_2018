@@ -105,7 +105,7 @@ namespace AoC_2018.Solutions
             var xRange = Enumerable.Range(minX, maxX - minX + 1);
             var yRange = Enumerable.Range(minY, maxY - minY + 1);
 
-            return Point.GeneratePointRange(xRange, yRange).ToHashSet();
+            return Point.GeneratePointRangeIteratingOverYFirst(xRange, yRange).ToHashSet();
         }
 
         private static void ValidateResult(List<Point> allPoints, Dictionary<Point, SurroundingArea> pointsAndItsSurroundingArea)
@@ -210,7 +210,7 @@ namespace AoC_2018.Solutions
                 }
             }
 
-            return Point.GeneratePointRange(curatedXRange, curatedYRange).ToHashSet();
+            return Point.GeneratePointRangeIteratingOverYFirst(curatedXRange, curatedYRange).ToHashSet();
         }
 
         private IEnumerable<Point> ExtractDesiredRegion(ICollection<Point> candidateLocations, ICollection<Point> allPoints)

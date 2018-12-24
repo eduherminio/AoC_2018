@@ -59,7 +59,7 @@ namespace AoC_2018.Model
                 : null;
         }
 
-        static public IEnumerable<Point> GeneratePointRange(IEnumerable<int> xRange, IEnumerable<int> yRange)
+        static public IEnumerable<Point> GeneratePointRangeIteratingOverYFirst(IEnumerable<int> xRange, IEnumerable<int> yRange)
         {
             foreach (int x in xRange)
             {
@@ -70,7 +70,7 @@ namespace AoC_2018.Model
             }
         }
 
-        static public IEnumerable<Point> GenerateAlternativePointRange(IEnumerable<int> xRange, IEnumerable<int> yRange)
+        static public IEnumerable<Point> GeneratePointRangeIteratingOverXFirst(IEnumerable<int> xRange, IEnumerable<int> yRange)
         {
             foreach (int y in yRange)
             {

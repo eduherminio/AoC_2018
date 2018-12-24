@@ -109,7 +109,7 @@ namespace AoC_2018.Solutions
                 var xRange = Enumerable.Range(downLeft.X, upRight.X - downLeft.X + 1);
                 var yRange = Enumerable.Range(downLeft.Y, upRight.Y - downLeft.Y + 1);
 
-                var points = Point.GenerateAlternativePointRange(xRange, yRange);
+                var points = Point.GeneratePointRangeIteratingOverXFirst(xRange, yRange);
                 int y0 = points.First().Y;
 
                 foreach (Point point in points)
