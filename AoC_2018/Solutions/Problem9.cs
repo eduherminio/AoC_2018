@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace AoC_2018.Solutions
 {
@@ -41,10 +40,10 @@ namespace AoC_2018.Solutions
                 playerPointPairs.Add(i, 0);
             }
 
-            LinkedList<int> field = new LinkedList<int>();
+            List<int> field = new List<int>();
 
-            field.AddFirst(0);
-            field.AddLast(1);
+            field.Add(0);
+            field.Add(1);
             int turn = 0;
             int indexOfCurrentMarble = 1;
 
@@ -64,18 +63,18 @@ namespace AoC_2018.Solutions
 
                     indexOfCurrentMarble = indexOfMarbleToRemove;
 
-                    field.Remove(field.Find(field.ElementAt(indexOfMarbleToRemove)));
+                    field.RemoveAt(indexOfMarbleToRemove);
                 }
                 else
                 {
                     if (indexOfCurrentMarble + 2 <= field.Count)
                     {
-                        field.AddAfter(field.Find(field.ElementAt(indexOfCurrentMarble + 1)), marbleIndex);
+                        field.Insert(indexOfCurrentMarble + 2, marbleIndex);
                         indexOfCurrentMarble += 2;
                     }
                     else if (indexOfCurrentMarble + 2 == field.Count + 1)   // Last one
                     {
-                        field.AddAfter(field.First, marbleIndex);
+                        field.Insert(1, marbleIndex);
                         indexOfCurrentMarble = 1;
                     }
                     else
