@@ -13,7 +13,7 @@ namespace AoC_2018.Solutions
 
         public void Solve_1()
         {
-            CalculatePowerLeveTest();
+            CalculatePowerLevelTest();
 
             _gridSerialNumber = ParseInput();
 
@@ -22,28 +22,8 @@ namespace AoC_2018.Solutions
             Dictionary<Point, int> pointPowerLevel = new Dictionary<Point, int>();
             Dictionary<Point, int> pointSquareTotalPower = new Dictionary<Point, int>();
 
-            foreach (Point point in grid)
-            {
-                IEnumerable<Point> points = Point.GeneratePointRangeIteratingOverXFirst(
-                    RangeHelpers.GenerateRange(point.X, point.X + 2),
-                    RangeHelpers.GenerateRange(point.Y, point.Y + 2));
-
-                int totalPower = 0;
-                foreach (Point p in points)
-                {
-                    if (pointPowerLevel.TryGetValue(p, out int pPower))
-                    {
-                        totalPower += pPower;
-                    }
-                    else
-                    {
-                        pPower = CalculatePowerLevel(p);
-                        pointPowerLevel.Add(p, pPower);
-                        totalPower += pPower;
-                    }
-                }
-                pointSquareTotalPower.Add(point, totalPower);
-            }
+            int squareSize = 3;
+            EvaluateGridPowerLevel(grid, ref pointPowerLevel, ref pointSquareTotalPower, squareSize);
 
             var pairWithMaxPower = pointSquareTotalPower.OrderByDescending(pair => pair.Value).First();
 
@@ -52,7 +32,40 @@ namespace AoC_2018.Solutions
 
         public void Solve_2()
         {
-            throw new NotImplementedException();
+            const int maxSquareSize = 300;
+            _gridSerialNumber = ParseInput();
+
+            IEnumerable<Point> grid = GenerateGrid();
+
+            Dictionary<Point, int> pointPowerLevel = new Dictionary<Point, int>();
+
+            Dictionary<Point, Tuple<int, int>> pointSquareTotalPowerSquareSize = new Dictionary<Point, Tuple<int, int>>();
+
+            foreach (int squareSize in RangeHelpers.GenerateRange(1, maxSquareSize))
+            {
+                Dictionary<Point, int> pointSquareTotalPower = new Dictionary<Point, int>();
+
+                EvaluateGridPowerLevel(grid, ref pointPowerLevel, ref pointSquareTotalPower, squareSize);
+
+                foreach (var pair in pointSquareTotalPower)
+                {
+                    if (pointSquareTotalPowerSquareSize.TryGetValue(pair.Key, out Tuple<int, int> value))
+                    {
+                        if (value.Item1 < pair.Value)
+                        {
+                            pointSquareTotalPowerSquareSize[pair.Key] = Tuple.Create(pair.Value, squareSize);
+                        }
+                    }
+                    else
+                    {
+                        pointSquareTotalPowerSquareSize[pair.Key] = Tuple.Create(pair.Value, squareSize);
+                    }
+                }
+            }
+
+            var pairWithMaxPower = pointSquareTotalPowerSquareSize.OrderByDescending(pair => pair.Value.Item1).First();
+
+            Console.Write($"\nDay 11, part 2: {pairWithMaxPower.Key}, {pairWithMaxPower.Value.Item2}");
         }
 
         private ulong ParseInput()
@@ -84,7 +97,41 @@ namespace AoC_2018.Solutions
             return realpowerLevel - 5;
         }
 
-        private void CalculatePowerLeveTest()
+        private void EvaluateGridPowerLevel(IEnumerable<Point> grid, ref Dictionary<Point, int> pointPowerLevel, ref Dictionary<Point, int> pointSquareTotalPower, int squareSize)
+        {
+            Console.WriteLine($"Evaluating power level for squares sized {squareSize}");
+
+            foreach (Point point in grid)
+            {
+                if (point.X + squareSize > 300
+                    || point.Y + squareSize > 300)
+                {
+                    continue;
+                }
+
+                IEnumerable<Point> points = Point.GeneratePointRangeIteratingOverXFirst(
+                    RangeHelpers.GenerateRange(point.X, point.X + (squareSize - 1)),
+                    RangeHelpers.GenerateRange(point.Y, point.Y + (squareSize - 1)));
+
+                int totalPower = 0;
+                foreach (Point p in points)
+                {
+                    if (pointPowerLevel.TryGetValue(p, out int pPower))
+                    {
+                        totalPower += pPower;
+                    }
+                    else
+                    {
+                        pPower = CalculatePowerLevel(p);
+                        pointPowerLevel.Add(p, pPower);
+                        totalPower += pPower;
+                    }
+                }
+                pointSquareTotalPower.Add(point, totalPower);
+            }
+        }
+
+        private void CalculatePowerLevelTest()
         {
             if (4 != CalculatePowerLevel(new Point(3, 5), 8)
                 || -5 != CalculatePowerLevel(new Point(122, 79), 57)
