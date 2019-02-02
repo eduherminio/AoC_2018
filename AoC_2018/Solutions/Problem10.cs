@@ -144,7 +144,7 @@ namespace AoC_2018.Solutions
             return false;
         }
 
-        private class Star : Point
+        private class Star : Point, IEquatable<Star>
         {
             public Point Speed { get; set; }
 

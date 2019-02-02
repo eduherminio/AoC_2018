@@ -2,12 +2,11 @@
 
 namespace AoC_2018
 {
-    class Program
+    public static class Program
     {
-        static void Main(string[] args)
+        public static void Main()
         {
-            //ProblemSolver.SolveAoC_2018.Solutions.<Problem5>();
-            ProblemSolver.SolveAllProblems();
+            ProblemSolver.SolveAllProblemsWithMetrics();
 
             Console.ReadKey();
         }

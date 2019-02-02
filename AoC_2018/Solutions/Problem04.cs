@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace AoC_2018.Solutions
 {
-    public class Problem04: BaseProblem, IProblem
+    public class Problem04 : BaseProblem, IProblem
     {
         public void Solve_1()
         {
@@ -80,7 +80,7 @@ namespace AoC_2018.Solutions
                 .Trim(new char[] { ' ', ']' });
 
             int guardId = 0;
-            EventType eventType = default(EventType);
+            EventType eventType = default;
 
             if (eventPartString.Contains("wakes up"))
             {
@@ -105,7 +105,7 @@ namespace AoC_2018.Solutions
                 }
             }
 
-            return new Event(guardId, default(DateTime), eventType);
+            return new Event(guardId, default, eventType);
         }
 
         private DateTime ParseDateTime(string rawLine)
@@ -128,7 +128,7 @@ namespace AoC_2018.Solutions
                     ExtractGuardId(ref orderedEvents, index);
                 }
 
-                if (evnt.GuardId == default(int))
+                if (evnt.GuardId == default)
                 {
                     throw new Exception("Badly inferred event's GuardId");
                 }
@@ -188,7 +188,7 @@ namespace AoC_2018.Solutions
                                     {
                                         GuardId = grouping.Key,
                                         SecondsAsleep = asleepTime.TotalSeconds,
-                                        MinuteTimesAsleepDictionary = new Dictionary<int, int>() { }
+                                        MinuteTimesAsleepDictionary = new Dictionary<int, int>()
                                     });
 
                                     minutesAsleep.ForEach(min =>
@@ -225,7 +225,6 @@ namespace AoC_2018.Solutions
             var orderedDictionary = guardId_minute_timesAsleepInThatMinute.OrderByDescending(pair => pair.Value.Item2);
 
             return Tuple.Create(orderedDictionary.First().Value.Item1, orderedDictionary.First().Key);
-
         }
 
         private enum EventType
@@ -243,7 +242,7 @@ namespace AoC_2018.Solutions
 
             public EventType EventType { get; set; }
 
-            public Event(int guardId, DateTime dateTime, EventType eventType)
+            public Event(int guardId, in DateTime dateTime, EventType eventType)
             {
                 GuardId = guardId;
                 DateTime = dateTime;

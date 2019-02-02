@@ -37,10 +37,8 @@ namespace AoC_2018.Solutions
                 playerPointPairs.Add(i, 0);
             }
 
-            List<int> field = new List<int>();
+            List<int> field = new List<int> { 0, 1 };
 
-            field.Add(0);
-            field.Add(1);
             int turn = 0;
             int indexOfCurrentMarble = 1;
 
@@ -56,7 +54,7 @@ namespace AoC_2018.Solutions
                         ? indexOfCurrentMarble - 7
                         : field.Count + (indexOfCurrentMarble - 7);
 
-                    playerPointPairs[turn] += (ulong)(marbleIndex + field.ElementAt(indexOfMarbleToRemove));
+                    playerPointPairs[turn] += (ulong)(marbleIndex + field[indexOfMarbleToRemove]);
 
                     indexOfCurrentMarble = indexOfMarbleToRemove;
 
@@ -81,7 +79,7 @@ namespace AoC_2018.Solutions
                 }
             }
 
-            return (playerPointPairs.Max(pair => pair.Value));
+            return playerPointPairs.Max(pair => pair.Value);
         }
 
         public Tuple<int, int> ParseInput()

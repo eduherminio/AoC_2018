@@ -96,8 +96,6 @@ namespace AoC_2018.Solutions
 
         private HashSet<Point> ExtractAreaOfInterest(ICollection<Point> edgePoints)
         {
-            HashSet<Point> areaOfInterest = new HashSet<Point>();
-
             int minX = edgePoints.Min(p => p.X);
             int minY = edgePoints.Min(p => p.Y);
             int maxX = edgePoints.Max(p => p.X);
@@ -138,7 +136,7 @@ namespace AoC_2018.Solutions
         {
             internal Point Point { get; set; }
 
-            internal HashSet<Point> SurroundingGrid { get; set; } = new HashSet<Point>();
+            internal HashSet<Point> SurroundingGrid { get; set; }
 
             internal long Area => SurroundingGrid.Count;
 
@@ -155,8 +153,6 @@ namespace AoC_2018.Solutions
         #region Part 2
         private HashSet<Point> ExtractCandidateLocations(ICollection<Point> allPoints)
         {
-            HashSet<Point> candidateLocations = new HashSet<Point>();
-
             List<Point> edgePoints = ExtractEdgePoints(allPoints);
 
             int minX = edgePoints.Min(p => p.X);
@@ -164,8 +160,8 @@ namespace AoC_2018.Solutions
             int maxX = edgePoints.Max(p => p.X);
             int maxY = edgePoints.Max(p => p.Y);
 
-            var xRange = RangeHelpers.GenerateRange(minValue: (maxX - _distanceConstraint), maxValue: minX + _distanceConstraint);
-            var yRange = RangeHelpers.GenerateRange(minValue: (maxY - _distanceConstraint), maxValue: minY + _distanceConstraint);
+            var xRange = RangeHelpers.GenerateRange(minValue: maxX - _distanceConstraint, maxValue: minX + _distanceConstraint);
+            var yRange = RangeHelpers.GenerateRange(minValue: maxY - _distanceConstraint, maxValue: minY + _distanceConstraint);
 
             // 10_000 x 10_0000, not being able to invoke GeneratePointRange yet
 

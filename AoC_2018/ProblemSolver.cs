@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace AoC_2018
 {
-    static class ProblemSolver
+    public static class ProblemSolver
     {
         internal static void Solve<TProblem>()
             where TProblem : IProblem, new()
@@ -97,7 +97,6 @@ namespace AoC_2018
             {
                 Console.WriteLine();
             }
-
 
             Console.ForegroundColor = originalColor;
         }

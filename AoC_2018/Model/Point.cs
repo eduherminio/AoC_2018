@@ -54,7 +54,7 @@ namespace AoC_2018.Model
 
             var orderedDictionary = pointDistanceDictionary.OrderBy(pair => pair.Value);
 
-            return pointDistanceDictionary.Values.Where(distance => distance == orderedDictionary.First().Value).Count() == 1
+            return pointDistanceDictionary.Values.Count(distance => distance == orderedDictionary.First().Value) == 1
                 ? orderedDictionary.First().Key
                 : null;
         }

@@ -5,7 +5,7 @@ using FileParser;
 
 namespace AoC_2018.Solutions
 {
-    public class Problem02: BaseProblem, IProblem
+    public class Problem02 : BaseProblem, IProblem
     {
         public void Solve_1()
         {
@@ -25,8 +25,8 @@ namespace AoC_2018.Solutions
                     }
                 }
 
-                stringsWithTwoRepeatedLetters += charDic.Values.Where(v => v == 2).Any() ? 1 : 0;
-                stringsWithThreeRepeatedLetters += charDic.Values.Where(v => v == 3).Any() ? 1 : 0;
+                stringsWithTwoRepeatedLetters += charDic.Values.Any(v => v == 2) ? 1 : 0;
+                stringsWithThreeRepeatedLetters += charDic.Values.Any(v => v == 3) ? 1 : 0;
             }
 
             checkSum = stringsWithTwoRepeatedLetters * stringsWithThreeRepeatedLetters;
@@ -36,7 +36,7 @@ namespace AoC_2018.Solutions
 
         public void Solve_2()
         {
-            List<string> ids = ParseInput().ToList(); ;
+            List<string> ids = ParseInput().ToList();
 
             Tuple<string, string> correctBoxes = ExtractCorrectBoxes(ids);
 
@@ -70,18 +70,18 @@ namespace AoC_2018.Solutions
                 string currentId = ids[idIndex];
                 string previousId = ids[idIndex - 1];
 
-                if (currentId.Count() != previousId.Count())
+                if (currentId.Length != previousId.Length)
                 {
                     continue;
                 }
 
                 bool alreadyACoindidence = false;
 
-                for (int charIndex = 0; charIndex < currentId.Count(); ++charIndex)
+                for (int charIndex = 0; charIndex < currentId.Length; ++charIndex)
                 {
                     if (currentId[charIndex] != previousId[charIndex])
                     {
-                        if (alreadyACoindidence == true)
+                        if (alreadyACoindidence)
                         {
                             alreadyACoindidence = false;
                             break;
@@ -93,11 +93,11 @@ namespace AoC_2018.Solutions
                     }
                 }
 
-                if (alreadyACoindidence == true)
+                if (alreadyACoindidence)
                 {
                     correctBoxes = Tuple.Create(currentId, previousId);
 
-                    if (correctBoxes.Item1 == default(string) || correctBoxes.Item2 == default(string))
+                    if (correctBoxes.Item1 == default || correctBoxes.Item2 == default)
                     {
                         throw new Exception("Exception in ExtractCorrectBoxes method");
                     }
@@ -111,9 +111,9 @@ namespace AoC_2018.Solutions
 
         private string ExtractCommonChars(Tuple<string, string> tuple)
         {
-            string commonString = default(string);
+            string commonString = default;
 
-            for (int charIndex = 0; charIndex < tuple.Item1.Count(); ++charIndex)
+            for (int charIndex = 0; charIndex < tuple.Item1.Length; ++charIndex)
             {
                 if (tuple.Item1[charIndex] == tuple.Item2[charIndex])
                 {
@@ -121,7 +121,7 @@ namespace AoC_2018.Solutions
                 }
             }
 
-            if (commonString.Count() + 1 != tuple.Item1.Count() || commonString.Count() + 1 != tuple.Item2.Count() || commonString == default(string))
+            if (commonString.Length + 1 != tuple.Item1.Length || commonString.Length + 1 != tuple.Item2.Length || commonString == default)
             {
                 throw new Exception("Exception in ExtractCommonChars method");
             }

@@ -8,8 +8,8 @@ namespace AoC_2018.Solutions
 {
     public class Problem08 : BaseProblem, IProblem
     {
-        private HashSet<MetadataNode> _nodes = new HashSet<MetadataNode>();
-        Stack<int> _intStack;
+        private readonly HashSet<MetadataNode> _nodes = new HashSet<MetadataNode>();
+        private Stack<int> _intStack;
 
         public void Solve_1()
         {
@@ -100,7 +100,7 @@ namespace AoC_2018.Solutions
                 {
                     if (metadata > 0 && metadata <= children.Count)
                     {
-                        value += CalculateNodeValue(children.ElementAt(metadata - 1));
+                        value += CalculateNodeValue(children[metadata - 1]);
                     }
                 }
             }

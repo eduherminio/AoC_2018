@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace AoC_2018.Solutions
 {
-    public class Problem03: BaseProblem, IProblem
+    public class Problem03 : BaseProblem, IProblem
     {
         public void Solve_1()
         {

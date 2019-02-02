@@ -4,7 +4,7 @@ using FileParser;
 
 namespace AoC_2018.Solutions
 {
-    public class Problem01: BaseProblem, IProblem
+    public class Problem01 : BaseProblem, IProblem
     {
         public void Solve_1()
         {

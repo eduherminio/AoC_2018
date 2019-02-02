@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace AoC_2018.Solutions
 {
-    public class Problem07: BaseProblem, IProblem
+    public class Problem07 : BaseProblem, IProblem
     {
         public void Solve_1()
         {
@@ -124,16 +124,17 @@ namespace AoC_2018.Solutions
             List<int> availableWorkers = AvailableWorkers(workersTimetable).ToList();
 
             var assignableSteps = unorderedSteps
-                .Where(step => !step.InProgressOrCompleted)
-                .Where(step => !step.NonResolvedDependencies.Any())
+                .Where(step =>
+                    !step.InProgressOrCompleted
+                    && !step.NonResolvedDependencies.Any())
                 .OrderBy(step => step.Name)
                 .ToList();
 
-            var stepsToAssign = assignableSteps.GetRange(0, Math.Min(assignableSteps.Count, availableWorkers.Count()));
+            var stepsToAssign = assignableSteps.GetRange(0, Math.Min(assignableSteps.Count, availableWorkers.Count));
 
-            for (int index = 0; index < stepsToAssign.Count(); ++index)
+            for (int index = 0; index < stepsToAssign.Count; ++index)
             {
-                workersTimetable[availableWorkers.ElementAt(index)] = stepsToAssign.ElementAt(index);
+                workersTimetable[availableWorkers[index]] = stepsToAssign[index];
             }
         }
 
@@ -179,7 +180,7 @@ namespace AoC_2018.Solutions
             return workersTimetable.Where(pair => pair.Value == null).Select(tuple => tuple.Key);
         }
 
-        private class Step
+        private class Step : IEquatable<Step>
         {
             public char Name { get; set; }
 

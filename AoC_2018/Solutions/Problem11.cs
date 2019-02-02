@@ -22,7 +22,7 @@ namespace AoC_2018.Solutions
             Dictionary<Point, int> pointPowerLevel = new Dictionary<Point, int>();
             Dictionary<Point, int> pointSquareTotalPower = new Dictionary<Point, int>();
 
-            int squareSize = 3;
+            const int squareSize = 3;
             EvaluateGridPowerLevel(grid, ref pointPowerLevel, ref pointSquareTotalPower, squareSize);
 
             var pairWithMaxPower = pointSquareTotalPower.OrderByDescending(pair => pair.Value).First();
@@ -32,19 +32,19 @@ namespace AoC_2018.Solutions
 
         public void Solve_2()
         {
-            const int maxSquareSize = 300;
             _gridSerialNumber = ParseInput();
 
             IEnumerable<Point> grid = GenerateGrid();
 
             Dictionary<Point, int> pointPowerLevel = new Dictionary<Point, int>();
 
+            //const int maxSquareSize = 300;
             //pointPowerLevel = Solve2_BruteForce(maxSquareSize, grid, pointPowerLevel);
 
             Dictionary<Point, Tuple<int, int>> pointSquareTotalPowerSquareSize = new Dictionary<Point, Tuple<int, int>>();
             foreach (Point point in grid.Reverse())
             {
-                EvaluatePointPowerLevelWithDifferentSquareSizes(point, grid, ref pointPowerLevel, ref pointSquareTotalPowerSquareSize);
+                EvaluatePointPowerLevelWithDifferentSquareSizes(point, ref pointPowerLevel, ref pointSquareTotalPowerSquareSize);
             }
 
             var max = pointSquareTotalPowerSquareSize.OrderByDescending(pair => pair.Value.Item1).First();
@@ -147,7 +147,7 @@ namespace AoC_2018.Solutions
             }
         }
 
-        private void EvaluatePointPowerLevelWithDifferentSquareSizes(Point point, IEnumerable<Point> grid, ref Dictionary<Point, int> pointPowerLevel, ref Dictionary<Point, Tuple<int, int>> pointSquareTotalPowerSquareSize)
+        private void EvaluatePointPowerLevelWithDifferentSquareSizes(Point point, ref Dictionary<Point, int> pointPowerLevel, ref Dictionary<Point, Tuple<int, int>> pointSquareTotalPowerSquareSize)
         {
             Console.WriteLine($"Evaluating point {point}");
 
@@ -235,7 +235,6 @@ namespace AoC_2018.Solutions
                 var max = squareSizeValues.OrderByDescending(pair => pair.Value).First();
                 pointSquareTotalPowerSquareSize[point] = Tuple.Create(max.Value, max.Key);
             }
-
         }
 
         private void CalculatePowerLevelTest()
